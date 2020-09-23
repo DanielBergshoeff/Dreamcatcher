@@ -352,7 +352,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1001 &102024160
 PrefabInstance:
@@ -14550,6 +14550,7 @@ MonoBehaviour:
   Target: {fileID: 97962511}
   RotateSpeed: 2
   MoveSpeed: 8
+  BonusMoveSpeed: 0
   Distance: 5
 --- !u!1 &2078825942
 GameObject:

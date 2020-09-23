@@ -32,7 +32,7 @@ public class FollowCamera : MonoBehaviour
 
         dist = Mathf.Clamp(dist, 0f, 1f);
 
-        transform.position = transform.position + followDir * Time.deltaTime * MoveSpeed * dist;
+        transform.position = transform.position + followDir * Time.deltaTime * (MoveSpeed + BonusMoveSpeed) * dist;
 
     }
 }
