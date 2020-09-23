@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         if (bonusSpeed > 0f) {
             bonusSpeed -= Time.deltaTime;
-            FollowCamera.Instance.BonusMoveSpeed = bonusSpeed / 2f;
+            FollowCamera.Instance.BonusMoveSpeed = (bonusSpeed / 5) * 4;
         }
 
         if (flapSpeed > 0f)
