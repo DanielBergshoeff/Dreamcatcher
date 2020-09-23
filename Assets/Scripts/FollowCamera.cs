@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
+    public static FollowCamera Instance;
+
     public Transform Target;
     public float RotateSpeed = 2f;
     public float MoveSpeed = 2f;
+    public float BonusMoveSpeed = 0f;
     public float Distance = 5f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private void Awake() {
+        Instance = this;
     }
 
     // Update is called once per frame

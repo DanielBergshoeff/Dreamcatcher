@@ -9,19 +9,29 @@ public class PlayerController : MonoBehaviour
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
 
+    public float DownwardsSpeedBonus = 3f;
+    public float MinDownwardsAngle = 80f;
+
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
+    private float downwardSpeed = 0f;
 
     private Vector2 targetDirection;
 
     // Update is called once per frame
     void Update()
     {
-        if (bonusSpeed > 0f)
+        if (bonusSpeed > 0f) {
             bonusSpeed -= Time.deltaTime;
+            FollowCamera.Instance.BonusMoveSpeed = bonusSpeed / 2f;
+        }
 
         if (flapSpeed > 0f)
             flapSpeed -= Time.deltaTime;
+
+        float angle = Vector3.Angle(-Vector3.up, transform.forward);
+        float downward = 1f - Mathf.Clamp(angle, 0f, MinDownwardsAngle) / MinDownwardsAngle;
+        bonusSpeed += downward * Time.deltaTime * DownwardsSpeedBonus;
 
         float speed = MoveSpeed + bonusSpeed + flapSpeed;
         transform.position = transform.position + transform.forward * Time.deltaTime * speed;
