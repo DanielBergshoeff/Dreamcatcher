@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0f, targetDirection.x * RotateSpeed, 0f);
         transform.Rotate(targetDirection.y * RotateSpeed, 0f, 0f);
 
-        //transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
+        transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
     }
 
     private void OnJump() {
