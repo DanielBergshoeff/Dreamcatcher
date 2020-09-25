@@ -30,9 +30,12 @@ public class PlayerController : MonoBehaviour
     private Vector3 pillarPoint;
     private float currentRot = 0f;
     private float direction = 0f;
+    private bool leftAnchor = false;
+    private Vector3 startPosition;
 
     private void Awake() {
         body = transform.GetChild(0);
+        startPosition = transform.position + transform.right * 1f;
     }
 
     private void OnBind() {
@@ -55,6 +58,12 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        /*
+        if (!leftAnchor) {
+            transform.RotateAround(transform.position + startPosition, Vector3.up, BindRotationSpeed * direction * Time.deltaTime);
+            return;
+        }*/
+
         if (aroundPillar) {
             transform.RotateAround(pillarPoint, Vector3.up, BindRotationSpeed * direction * Time.deltaTime);
             currentRot += BindRotationSpeed * Time.deltaTime;
