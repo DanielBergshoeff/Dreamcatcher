@@ -56,6 +56,7 @@ public class PillarManager : MonoBehaviour
 
         if(BindingPillars.Count == 4) {
             AddMesh(BindingPillars[0].BindPosition, BindingPillars[1].BindPosition, BindingPillars[2].BindPosition);
+            CreatureManager.Instance.CheckForButterfly(BindingPillars[0].BindPosition, BindingPillars[1].BindPosition, BindingPillars[2].BindPosition);
             BindingPillars = new List<PillarBind>();
         }
     }

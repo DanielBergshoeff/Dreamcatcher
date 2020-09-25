@@ -1427,9 +1427,11 @@ GameObject:
   - component: {fileID: 1291530983}
   - component: {fileID: 1291530982}
   - component: {fileID: 1291530981}
+  - component: {fileID: 2589922728538494379}
+  - component: {fileID: 5596278699262880075}
   m_Layer: 0
   m_Name: PREF_PillarBig
-  m_TagString: Untagged
+  m_TagString: Pillar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1618,3 +1620,29 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5651412, y: 0.72626495, z: 1.4599986}
   m_Center: {x: 0.29437852, y: 18.241268, z: 0.035208464}
+--- !u!136 &2589922728538494379
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250572050651559951}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 3.89
+  m_Height: 26.02
+  m_Direction: 1
+  m_Center: {x: -0.02, y: 11.526819, z: 0.19}
+--- !u!114 &5596278699262880075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250572050651559951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 342d46c84e999974a9c57860222fa703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
