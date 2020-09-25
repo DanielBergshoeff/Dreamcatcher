@@ -25,16 +25,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Triplanar_D3588D42_Texture_1:
-        m_Texture: {fileID: 2800000, guid: 21643c8ed8c9be94fbed14e3ddfd25c5, type: 3}
+        m_Texture: {fileID: 2800000, guid: b23002c022741704dbb64dd4633bec96, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_2E5FB6FD: 1.01
     - Vector1_336E9BA7: 0.26
-    - Vector1_8D9A9316: 0.44
+    - Vector1_8D9A9316: 0.27
     - Vector1_9C6B4D98: 5.36
     - Vector1_B0CC888D: -0.1
-    - Vector1_CDC844B2: 0.17
+    - Vector1_CDC844B2: 0
     - Vector1_F2267AD1: 1.02
     m_Colors:
     - Color_7F51411C: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
