@@ -61,9 +61,12 @@ public class PillarManager : MonoBehaviour
     }
 
     public void AddMesh(Vector3 pos1, Vector3 pos2, Vector3 pos3) {
-        MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        GameObject row = new GameObject();
+        Instantiate(row);
+
+        MeshRenderer meshRenderer = row.AddComponent<MeshRenderer>();
         meshRenderer.sharedMaterial = TriangleMat;
-        MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
+        MeshFilter meshFilter = row.AddComponent<MeshFilter>();
 
         Mesh mesh = new Mesh();
         Vector3[] vertices = new Vector3[3]
@@ -77,15 +80,18 @@ public class PillarManager : MonoBehaviour
         int[] tris = new int[3]
         {
             // lower left triangle
-            0, 2, 1,
+            0, 2, 1
         };
         mesh.triangles = tris;
 
+        var dir = Vector3.Cross(pos2 - pos1, pos3 - pos1);
+        var norm = Vector3.Normalize(dir);
+
         Vector3[] normals = new Vector3[3]
         {
-            -Vector3.up,
-            -Vector3.up,
-            -Vector3.up,
+            -norm,
+            -norm,
+            -norm,
         };
         mesh.normals = normals;
 
