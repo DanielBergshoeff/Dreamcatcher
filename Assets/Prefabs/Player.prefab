@@ -46,11 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b613d40eed893cc4988a08790b306243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 4
-  RotateSpeed: 0.5
+  MoveSpeed: 5
+  RotateSpeed: 0.2
   MaxRotation: 60
   DownwardsSpeedBonus: 3
   MinDownwardsAngle: 80
+  BindRotationSpeed: 120
   TriangleCanvas: {fileID: 6581840635886203216}
 --- !u!114 &1072539396571596698
 MonoBehaviour:
@@ -548,7 +549,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: press triangle to bind
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
