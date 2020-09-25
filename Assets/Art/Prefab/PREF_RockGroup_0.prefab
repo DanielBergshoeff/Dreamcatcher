@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5961383506404843698}
   - component: {fileID: 5674799715147011309}
   m_Layer: 0
-  m_Name: SM_RockGroup_0
+  m_Name: PREF_RockGroup_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3895688628597222992}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: f8e2f12e7cdc2c84baf99b537e0f579b, type: 3}
+  - {fileID: 2100000, guid: b1ea36af8a2a4194abe0b706949f6f13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
