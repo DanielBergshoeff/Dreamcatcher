@@ -1,0 +1,571 @@
+fileFormatVersion: 2
+guid: 494aa7ea0008aea45944de20ed696804
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4550624984834437198
+    second: ButterflyAnimation_0
+  - first:
+      213: 866433825802307527
+    second: ButterflyAnimation_1
+  - first:
+      213: -3522838363642467246
+    second: ButterflyAnimation_2
+  - first:
+      213: -8445010871120924235
+    second: ButterflyAnimation_3
+  - first:
+      213: 2085884726927063898
+    second: ButterflyAnimation_4
+  - first:
+      213: 3354058346202976196
+    second: ButterflyAnimation_5
+  - first:
+      213: -7156557901039236242
+    second: ButterflyAnimation_6
+  - first:
+      213: -3973522697885399620
+    second: ButterflyAnimation_7
+  - first:
+      213: 2901912045655695673
+    second: ButterflyAnimation_8
+  - first:
+      213: 3876000802212756891
+    second: ButterflyAnimation_9
+  - first:
+      213: -7090117801799110743
+    second: ButterflyAnimation_10
+  - first:
+      213: 1450801528235864618
+    second: ButterflyAnimation_11
+  - first:
+      213: 2534361940851634817
+    second: ButterflyAnimation_12
+  - first:
+      213: 263552207553161845
+    second: ButterflyAnimation_13
+  - first:
+      213: -108214859783474351
+    second: ButterflyAnimation_14
+  - first:
+      213: 1642220222073994846
+    second: ButterflyAnimation_15
+  - first:
+      213: 8008449436200661471
+    second: ButterflyAnimation_16
+  - first:
+      213: -3369148820619577305
+    second: ButterflyAnimation_17
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: 2
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ButterflyAnimation_0
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 1453
+        width: 184
+        height: 463
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bf0de0cfaee8d0c0800000000000000
+      internalID: -4550624984834437198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_1
+      rect:
+        serializedVersion: 2
+        x: 633
+        y: 1455
+        width: 254
+        height: 460
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c7445859f0360c00800000000000000
+      internalID: 866433825802307527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_2
+      rect:
+        serializedVersion: 2
+        x: 1096
+        y: 1455
+        width: 321
+        height: 462
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25ce8fd4c2d5c1fc0800000000000000
+      internalID: -3522838363642467246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_3
+      rect:
+        serializedVersion: 2
+        x: 1555
+        y: 1455
+        width: 386
+        height: 462
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b176863b5b4dca80800000000000000
+      internalID: -8445010871120924235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_4
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 973
+        width: 483
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5b76ee8b1d82fc10800000000000000
+      internalID: 2085884726927063898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_5
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 973
+        width: 484
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cfcc599b420c8e20800000000000000
+      internalID: 3354058346202976196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_6
+      rect:
+        serializedVersion: 2
+        x: 1055
+        y: 972
+        width: 386
+        height: 462
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6b8a0e818cceac90800000000000000
+      internalID: -7156557901039236242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_7
+      rect:
+        serializedVersion: 2
+        x: 1596
+        y: 971
+        width: 321
+        height: 463
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb5c69da8263bd8c0800000000000000
+      internalID: -3973522697885399620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_8
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 488
+        width: 254
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9312cba61a9a54820800000000000000
+      internalID: 2901912045655695673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_9
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 487
+        width: 184
+        height: 462
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9d350591325ac530800000000000000
+      internalID: 3876000802212756891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_10
+      rect:
+        serializedVersion: 2
+        x: 1173
+        y: 881
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9af2710ac67da9d90800000000000000
+      internalID: -7090117801799110743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_11
+      rect:
+        serializedVersion: 2
+        x: 1185
+        y: 485
+        width: 145
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a22b712ad48422410800000000000000
+      internalID: 1450801528235864618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_12
+      rect:
+        serializedVersion: 2
+        x: 1673
+        y: 484
+        width: 156
+        height: 460
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1823bb0f1ccdb2320800000000000000
+      internalID: 2534361940851634817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_13
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 1
+        width: 157
+        height: 462
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57ae9fe165358a300800000000000000
+      internalID: 263552207553161845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_14
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 398
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 153ff2b882b8f7ef0800000000000000
+      internalID: -108214859783474351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_15
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 2
+        width: 145
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5efea357965ac610800000000000000
+      internalID: 1642220222073994846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_16
+      rect:
+        serializedVersion: 2
+        x: 1173
+        y: 1
+        width: 156
+        height: 460
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd1fa66e45ab32f60800000000000000
+      internalID: 8008449436200661471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButterflyAnimation_17
+      rect:
+        serializedVersion: 2
+        x: 1673
+        y: 1
+        width: 156
+        height: 460
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7283b878ff06e31d0800000000000000
+      internalID: -3369148820619577305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 40e186448b17cc3469cf561bbba2a444
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
