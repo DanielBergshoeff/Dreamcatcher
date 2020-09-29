@@ -14,6 +14,7 @@ public class Creature : MonoBehaviour
     void Start()
     {
         CreatureManager.Instance.AllCreatures.Add(this);
+        Butterfly.SetActive(false);
     }
 
     // Update is called once per frame
@@ -37,6 +38,7 @@ public class Creature : MonoBehaviour
         if (isButterfly)
             return;
 
+        Butterfly.SetActive(true);
         switchNow = true;
     }
 }
