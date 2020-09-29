@@ -29,7 +29,7 @@ public class FreeLookCam : PivotBasedCameraRig
     private Quaternion m_PivotTargetRot;
     private Quaternion m_TransformTargetRot;
 
-    private bool resetRot = false;
+    private bool resetRot = true;
 
     public Vector2 RightStickValues;
     public float RotateSpeed;

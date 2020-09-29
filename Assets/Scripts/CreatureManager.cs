@@ -19,6 +19,19 @@ public class CreatureManager : MonoBehaviour
                 c.SwitchToButterfly();
             }
         }
+
+        CheckForFinish();
+    }
+
+    public void CheckForFinish() {
+        foreach (Creature c in AllCreatures) {
+            if (!c.switchNow) {
+                return;
+            }
+        }
+
+        //Pattern complete
+        PillarManager.Instance.CreatePortal();
     }
 
     float sign(Vector3 p1, Vector3 p2, Vector3 p3) {

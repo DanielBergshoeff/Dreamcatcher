@@ -204,9 +204,17 @@ public class PlayerController : MonoBehaviour
         targetDirection = context.Get<Vector2>();
     }
 
+    private void GoThroughPortal() {
+        transform.position = PillarManager.Instance.PortalCam.transform.position;
+    }
+
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Speed")) {
             bonusSpeed = 10f;
+        }
+
+        if (other.CompareTag("Portal")) {
+            GoThroughPortal();
         }
 
         if (inPillar == true)
