@@ -15,10 +15,13 @@ public class PillarManager : MonoBehaviour
     public GameObject PortalPrefab;
 
     public GameObject PortalCam;
+    public GameObject MyPortal;
+    public GameObject OtherPortal;
+    public GameObject OtherWorld;
 
     private List<LineRenderer> myLineRenderers;
     private List<LineRenderer> portalRenderers;
-    private bool portalCreated = true;
+    private bool portalCreated = false;
 
     private void Awake() {
         Instance = this;
@@ -26,13 +29,28 @@ public class PillarManager : MonoBehaviour
         BindingPillars = new List<PillarBind>();
         myLineRenderers = new List<LineRenderer>();
         portalRenderers = new List<LineRenderer>();
+        /*
         PortalCam.SetActive(portalCreated);
+        OtherWorld.SetActive(portalCreated);*/
     }
 
     private void Update() {
         if (portalCreated) {
-            PortalCam.transform.rotation = Camera.main.transform.rotation;
+            Vector3 playerOffsetFromPortal = Camera.main.transform.position - MyPortal.transform.position;
+            PortalCam.transform.position = OtherPortal.transform.position + playerOffsetFromPortal;
+
+            float angularDif = Quaternion.Angle(MyPortal.transform.rotation, OtherPortal.transform.rotation);
+            Quaternion portalRotationalDif = Quaternion.AngleAxis(angularDif, Vector3.up);
+
+            Vector3 newCameraDir = portalRotationalDif * Camera.main.transform.forward;
+            PortalCam.transform.rotation = Quaternion.LookRotation(newCameraDir, Vector3.up);
         }
+    }
+
+    public void SwapPortals() {
+        GameObject temp = MyPortal;
+        MyPortal = OtherPortal;
+        OtherPortal = temp;
     }
 
     public void CreatePortal() {
@@ -51,6 +69,8 @@ public class PillarManager : MonoBehaviour
         avgPosition += Vector3.up * 10f;
         go.transform.position = avgPosition;
 
+        MyPortal = go;
+
         foreach(LineRenderer lr in portalRenderers) {
             Vector3 direction = avgPosition - lr.GetPosition(0);
             Vector3 heading = direction.normalized;
@@ -59,6 +79,7 @@ public class PillarManager : MonoBehaviour
         }
 
         PortalCam.SetActive(true);
+        OtherWorld.SetActive(true);
         portalCreated = true;
     }
 

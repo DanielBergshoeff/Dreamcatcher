@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     [Header("Movement")]
     public float MoveSpeed = 3f;
     public float RotateSpeed = 3f;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private bool rotateAroundSelf = false;
 
     private void Awake() {
+        Instance = this;
         body = transform.GetChild(0);
     }
 
@@ -206,6 +209,7 @@ public class PlayerController : MonoBehaviour
 
     private void GoThroughPortal() {
         transform.position = PillarManager.Instance.PortalCam.transform.position;
+        PillarManager.Instance.SwapPortals();
     }
 
     private void OnTriggerEnter(Collider other) {

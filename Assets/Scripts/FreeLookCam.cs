@@ -38,7 +38,6 @@ public class FreeLookCam : PivotBasedCameraRig
     public float Height = 0f;
     public bool RotatingAroundPillar = false;
 
-
     public void OnR2() {
         if (!resetRot) {
             resetRot = true;
@@ -67,6 +66,8 @@ public class FreeLookCam : PivotBasedCameraRig
 
         m_PivotTargetRot = m_Pivot.transform.localRotation;
         m_TransformTargetRot = transform.localRotation;
+
+        SetCameraDistance(Distance);
     }
 
 
@@ -76,6 +77,17 @@ public class FreeLookCam : PivotBasedCameraRig
             Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = !m_LockCursor;
         }
+
+        if(PillarManager.Instance.MyPortal == null) 
+            return;
+
+        float dist = (PillarManager.Instance.MyPortal.transform.position - PlayerController.Instance.transform.position).magnitude / 2f - 5f;
+        dist = Mathf.Clamp(dist, -1f, Distance);;
+        SetCameraDistance(dist);
+    }
+
+    private void SetCameraDistance(float dist) {
+        m_Cam.transform.localPosition = new Vector3(0f, 0f, -dist);
     }
 
 
