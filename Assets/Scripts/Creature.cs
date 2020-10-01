@@ -7,7 +7,7 @@ public class Creature : MonoBehaviour
     public GameObject Shadow;
     public GameObject Butterfly;
 
-    private bool switchNow = false;
+    public bool switchNow = false;
     private bool isButterfly = false;
 
     // Start is called before the first frame update

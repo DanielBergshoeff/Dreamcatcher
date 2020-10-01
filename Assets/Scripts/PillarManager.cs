@@ -12,16 +12,75 @@ public class PillarManager : MonoBehaviour
 
     public GameObject LineRendererPrefab;
     public Material TriangleMat;
+    public GameObject PortalPrefab;
+
+    public GameObject PortalCam;
+    public GameObject MyPortal;
+    public GameObject OtherPortal;
+    public GameObject OtherWorld;
 
     private List<LineRenderer> myLineRenderers;
+    private List<LineRenderer> portalRenderers;
+    private bool portalCreated = false;
 
     private void Awake() {
         Instance = this;
         AllPillars = new List<Pillar>();
         BindingPillars = new List<PillarBind>();
         myLineRenderers = new List<LineRenderer>();
+        portalRenderers = new List<LineRenderer>();
+        /*
+        PortalCam.SetActive(portalCreated);
+        OtherWorld.SetActive(portalCreated);*/
+    }
 
-        
+    private void Update() {
+        if (portalCreated) {
+            Vector3 playerOffsetFromPortal = Camera.main.transform.position - MyPortal.transform.position;
+            PortalCam.transform.position = OtherPortal.transform.position + playerOffsetFromPortal;
+
+            float angularDif = Quaternion.Angle(MyPortal.transform.rotation, OtherPortal.transform.rotation);
+            Quaternion portalRotationalDif = Quaternion.AngleAxis(angularDif, Vector3.up);
+
+            Vector3 newCameraDir = portalRotationalDif * Camera.main.transform.forward;
+            PortalCam.transform.rotation = Quaternion.LookRotation(newCameraDir, Vector3.up);
+        }
+    }
+
+    public void SwapPortals() {
+        GameObject temp = MyPortal;
+        MyPortal = OtherPortal;
+        OtherPortal = temp;
+    }
+
+    public void CreatePortal() {
+        GameObject go = Instantiate(PortalPrefab);
+
+        Vector3 avgPosition = Vector3.zero;
+        foreach(Pillar p in AllPillars) {
+            avgPosition += p.transform.position;
+            LineRenderer lr = Instantiate(LineRendererPrefab).GetComponent<LineRenderer>();
+            lr.positionCount = 2;
+            lr.SetPosition(0, p.transform.position + Vector3.up * 10f);
+            portalRenderers.Add(lr);
+        }
+
+        avgPosition = avgPosition / AllPillars.Count;
+        avgPosition += Vector3.up * 10f;
+        go.transform.position = avgPosition;
+
+        MyPortal = go;
+
+        foreach(LineRenderer lr in portalRenderers) {
+            Vector3 direction = avgPosition - lr.GetPosition(0);
+            Vector3 heading = direction.normalized;
+            Vector3 newPos = lr.GetPosition(0) + heading * (direction.magnitude - 5f);
+            lr.SetPosition(1, newPos);
+        }
+
+        PortalCam.SetActive(true);
+        OtherWorld.SetActive(true);
+        portalCreated = true;
     }
 
     public void AddPillarToBind(Pillar pillar, Vector3 bindPos) {
