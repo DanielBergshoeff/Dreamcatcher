@@ -19,6 +19,8 @@ public class PillarManager : MonoBehaviour
     public GameObject OtherPortal;
     public GameObject OtherWorld;
 
+    public bool InstantPortal = false;
+
     private List<LineRenderer> myLineRenderers;
     private List<LineRenderer> portalRenderers;
     private bool portalCreated = false;
@@ -35,6 +37,9 @@ public class PillarManager : MonoBehaviour
     }
 
     private void Update() {
+        if (InstantPortal && !portalCreated)
+            CreatePortal();
+
         if (portalCreated) {
             Vector3 playerOffsetFromPortal = Camera.main.transform.position - MyPortal.transform.position;
             PortalCam.transform.position = OtherPortal.transform.position + playerOffsetFromPortal;
