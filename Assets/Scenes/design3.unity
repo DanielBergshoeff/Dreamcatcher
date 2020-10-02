@@ -3442,6 +3442,26 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8520806009576895760, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_AutoTargetPlayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8520806009576895760, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_UpdateType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8520806009576895760, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_TurnSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8520806009576895760, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_TurnSmoothing
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 886db7f689b6f804d9e92531c0ecfbac, type: 3}
 --- !u!1001 &335387998
