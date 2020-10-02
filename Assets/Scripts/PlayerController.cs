@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnLeftShoulder() {
+        if (aroundPillar)
+            return;
+
         if (!rotateAroundSelf) {
             direction = -1;
             currentRot = 0f;
@@ -59,6 +62,9 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnRightShoulder() {
+        if (aroundPillar)
+            return;
+
         if (!rotateAroundSelf) {
             direction = 1;
             currentRot = 0f;
