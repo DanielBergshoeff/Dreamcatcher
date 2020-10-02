@@ -31,9 +31,6 @@ public class PillarManager : MonoBehaviour
         BindingPillars = new List<PillarBind>();
         myLineRenderers = new List<LineRenderer>();
         portalRenderers = new List<LineRenderer>();
-        /*
-        PortalCam.SetActive(portalCreated);
-        OtherWorld.SetActive(portalCreated);*/
     }
 
     private void Update() {
@@ -89,39 +86,36 @@ public class PillarManager : MonoBehaviour
     }
 
     public void AddPillarToBind(Pillar pillar, Vector3 bindPos) {
-        for (int i = 0; i < BindingPillars.Count; i++) {
-            if (BindingPillars[i].MyPillar == pillar && (BindingPillars.Count <= 2 || i != 0)) {
+        if(BindingPillars.Count < 3) { //Just adding pillars
+            for (int i = 0; i < BindingPillars.Count; i++) {
+                if (BindingPillars[i].MyPillar == pillar) //If the pillar has already been bound, return.
+                    return;
+            }
+
+            BindingPillars.Add(new PillarBind(pillar, bindPos));
+            if (BindingPillars.Count <= 1) { //If this is the first pillar, create a new linerenderer and then return.
+                myLineRenderers.Add(Instantiate(LineRendererPrefab).GetComponent<LineRenderer>());
                 return;
             }
-            else if (BindingPillars[i].MyPillar == pillar && BindingPillars.Count == 3)
-                break;
-            else if (BindingPillars[i].MyPillar != pillar && BindingPillars.Count > 2) {
-                return;
+
+            List<Vector3> positions = new List<Vector3>();
+            foreach (PillarBind pb in BindingPillars) {
+                positions.Add(pb.BindPosition);
             }
+
+            myLineRenderers[myLineRenderers.Count - 1].positionCount = positions.Count;
+            myLineRenderers[myLineRenderers.Count - 1].SetPositions(positions.ToArray());
         }
+        else {
+            if (pillar != BindingPillars[0].MyPillar)
+                return;
 
-        BindingPillars.Add(new PillarBind(pillar, bindPos));
-        if (BindingPillars.Count <= 1) {
-            myLineRenderers.Add(Instantiate(LineRendererPrefab).GetComponent<LineRenderer>());
-            return;
-        }
-
-        List<Vector3> positions = new List<Vector3>();
-        foreach (PillarBind pb in BindingPillars) {
-            positions.Add(pb.BindPosition);
-        }
-
-        if(BindingPillars.Count == 4) {
-            positions[3] = positions[0];
-        }
-
-        myLineRenderers[myLineRenderers.Count - 1].positionCount = positions.Count;
-        myLineRenderers[myLineRenderers.Count - 1].SetPositions(positions.ToArray());
-
-        if(BindingPillars.Count == 4) {
+            BindingPillars.Add(BindingPillars[0]);
             AddMesh(BindingPillars[0].BindPosition, BindingPillars[1].BindPosition, BindingPillars[2].BindPosition);
             CreatureManager.Instance.CheckForButterfly(BindingPillars[0].BindPosition, BindingPillars[1].BindPosition, BindingPillars[2].BindPosition);
             BindingPillars = new List<PillarBind>();
+
+            myLineRenderers[myLineRenderers.Count - 1].positionCount = 0;
         }
     }
 

@@ -1212,6 +1212,7 @@ MonoBehaviour:
   MyPortal: {fileID: 0}
   OtherPortal: {fileID: 1121354646}
   OtherWorld: {fileID: 1975535146}
+  InstantPortal: 0
 --- !u!1001 &145280021
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2881,7 +2882,6 @@ GameObject:
   - component: {fileID: 287371804}
   - component: {fileID: 287371808}
   - component: {fileID: 287371807}
-  - component: {fileID: 287371806}
   - component: {fileID: 287371805}
   m_Layer: 0
   m_Name: Roof (2)
@@ -2917,18 +2917,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &287371806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 287371803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &287371807
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8320,7 +8308,6 @@ GameObject:
   - component: {fileID: 903133289}
   - component: {fileID: 903133288}
   - component: {fileID: 903133287}
-  - component: {fileID: 903133286}
   - component: {fileID: 903133285}
   m_Layer: 0
   m_Name: Roof
@@ -8342,18 +8329,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &903133286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 903133284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &903133287
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8426,7 +8401,6 @@ GameObject:
   - component: {fileID: 911738465}
   - component: {fileID: 911738469}
   - component: {fileID: 911738468}
-  - component: {fileID: 911738467}
   - component: {fileID: 911738466}
   m_Layer: 0
   m_Name: Roof (2)
@@ -8462,18 +8436,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &911738467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 911738464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &911738468
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9126,7 +9088,6 @@ GameObject:
   - component: {fileID: 980544201}
   - component: {fileID: 980544205}
   - component: {fileID: 980544204}
-  - component: {fileID: 980544203}
   - component: {fileID: 980544202}
   m_Layer: 0
   m_Name: Wall
@@ -9162,18 +9123,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07986, y: 1.0000043, z: 236.13824}
   m_Center: {x: 163.15123, y: 0.50000215, z: -118.06912}
---- !u!114 &980544203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 980544200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &980544204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9638,7 +9587,6 @@ GameObject:
   - component: {fileID: 1009760442}
   - component: {fileID: 1009760446}
   - component: {fileID: 1009760445}
-  - component: {fileID: 1009760444}
   - component: {fileID: 1009760443}
   m_Layer: 0
   m_Name: Roof (1)
@@ -9674,18 +9622,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &1009760444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009760441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1009760445
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10312,7 +10248,6 @@ GameObject:
   - component: {fileID: 1129542207}
   - component: {fileID: 1129542211}
   - component: {fileID: 1129542210}
-  - component: {fileID: 1129542209}
   - component: {fileID: 1129542208}
   m_Layer: 0
   m_Name: Wall
@@ -10348,18 +10283,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07986, y: 1.000032, z: 236.13835}
   m_Center: {x: 163.15123, y: 0.50004107, z: -118.069176}
---- !u!114 &1129542209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1129542206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1129542210
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10804,7 +10727,6 @@ GameObject:
   - component: {fileID: 1172032478}
   - component: {fileID: 1172032482}
   - component: {fileID: 1172032481}
-  - component: {fileID: 1172032480}
   - component: {fileID: 1172032479}
   m_Layer: 0
   m_Name: Wall
@@ -10840,18 +10762,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07983, y: 1.0000181, z: 236.13824}
   m_Center: {x: 163.15118, y: 0.499995, z: -118.06912}
---- !u!114 &1172032480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1172032477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1172032481
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11127,7 +11037,6 @@ GameObject:
   - component: {fileID: 1201856476}
   - component: {fileID: 1201856475}
   - component: {fileID: 1201856474}
-  - component: {fileID: 1201856473}
   - component: {fileID: 1201856472}
   m_Layer: 0
   m_Name: Wall
@@ -11149,18 +11058,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07986, y: 1.000032, z: 236.13835}
   m_Center: {x: 163.15123, y: 0.50004107, z: -118.069176}
---- !u!114 &1201856473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1201856471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1201856474
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11320,7 +11217,6 @@ GameObject:
   - component: {fileID: 1224233334}
   - component: {fileID: 1224233338}
   - component: {fileID: 1224233337}
-  - component: {fileID: 1224233336}
   - component: {fileID: 1224233335}
   m_Layer: 0
   m_Name: Roof (1)
@@ -11356,18 +11252,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &1224233336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224233333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1224233337
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12088,7 +11972,6 @@ GameObject:
   - component: {fileID: 1328881141}
   - component: {fileID: 1328881145}
   - component: {fileID: 1328881144}
-  - component: {fileID: 1328881143}
   - component: {fileID: 1328881142}
   m_Layer: 0
   m_Name: Arch
@@ -12125,18 +12008,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 788397566}
---- !u!114 &1328881143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328881140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1328881144
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12562,7 +12433,6 @@ GameObject:
   - component: {fileID: 1388653795}
   - component: {fileID: 1388653799}
   - component: {fileID: 1388653798}
-  - component: {fileID: 1388653797}
   - component: {fileID: 1388653796}
   m_Layer: 0
   m_Name: Roof
@@ -12598,18 +12468,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &1388653797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1388653794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1388653798
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13596,7 +13454,6 @@ GameObject:
   - component: {fileID: 1482092715}
   - component: {fileID: 1482092719}
   - component: {fileID: 1482092718}
-  - component: {fileID: 1482092717}
   - component: {fileID: 1482092716}
   m_Layer: 0
   m_Name: Floor
@@ -13632,18 +13489,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &1482092717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482092714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1482092718
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15034,7 +14879,6 @@ GameObject:
   - component: {fileID: 1623039582}
   - component: {fileID: 1623039581}
   - component: {fileID: 1623039580}
-  - component: {fileID: 1623039579}
   - component: {fileID: 1623039578}
   m_Layer: 0
   m_Name: Wall
@@ -15056,18 +14900,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07983, y: 1.0000181, z: 236.13824}
   m_Center: {x: 163.15118, y: 0.499995, z: -118.06912}
---- !u!114 &1623039579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1623039577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1623039580
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15296,7 +15128,6 @@ GameObject:
   - component: {fileID: 1653430937}
   - component: {fileID: 1653430941}
   - component: {fileID: 1653430940}
-  - component: {fileID: 1653430939}
   - component: {fileID: 1653430938}
   m_Layer: 0
   m_Name: Wall (1)
@@ -15332,18 +15163,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07983, y: 1.0000181, z: 236.13824}
   m_Center: {x: 163.15118, y: 0.499995, z: -118.06912}
---- !u!114 &1653430939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653430936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1653430940
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15408,7 +15227,6 @@ GameObject:
   - component: {fileID: 1659195757}
   - component: {fileID: 1659195756}
   - component: {fileID: 1659195755}
-  - component: {fileID: 1659195754}
   - component: {fileID: 1659195753}
   m_Layer: 0
   m_Name: Wall
@@ -15430,18 +15248,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07986, y: 1.0000043, z: 236.13824}
   m_Center: {x: 163.15123, y: 0.50000215, z: -118.06912}
---- !u!114 &1659195754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659195752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1659195755
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16318,6 +16124,7 @@ MonoBehaviour:
   MyPortal: {fileID: 0}
   OtherPortal: {fileID: 0}
   OtherWorld: {fileID: 0}
+  InstantPortal: 0
 --- !u!4 &1732534648 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2541943588028100253, guid: 816bed93768d9bc4dbf7a20f8141b51c,
@@ -17491,7 +17298,6 @@ GameObject:
   - component: {fileID: 1852374834}
   - component: {fileID: 1852374838}
   - component: {fileID: 1852374837}
-  - component: {fileID: 1852374836}
   - component: {fileID: 1852374835}
   m_Layer: 0
   m_Name: Floor (1)
@@ -17527,18 +17333,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 221.1911, y: 1, z: 236.13824}
   m_Center: {x: 110.59555, y: 0.5, z: -118.06912}
---- !u!114 &1852374836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1852374833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1852374837
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18214,7 +18008,6 @@ GameObject:
   - component: {fileID: 1934282771}
   - component: {fileID: 1934282775}
   - component: {fileID: 1934282774}
-  - component: {fileID: 1934282773}
   - component: {fileID: 1934282772}
   m_Layer: 0
   m_Name: Wall (1)
@@ -18250,18 +18043,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 116.07983, y: 1.0000181, z: 236.13824}
   m_Center: {x: 163.15118, y: 0.499995, z: -118.06912}
---- !u!114 &1934282773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934282770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &1934282774
 MeshRenderer:
   m_ObjectHideFlags: 0
