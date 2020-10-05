@@ -3261,8 +3261,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1072539396571596699, guid: 886db7f689b6f804d9e92531c0ecfbac,
         type: 3}
-      propertyPath: MinDownwardsAngle
-      value: 150
+      propertyPath: AversionMultiplier
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072539396571596699, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: CheckDistance
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1072539397506852144, guid: 886db7f689b6f804d9e92531c0ecfbac,
         type: 3}
