@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [Header("Collision aversion")]
     public float CheckDistance = 5f;
     public LayerMask CollisionLayer;
+    public float AversionMultiplier = 3f;
+    public float SphereSize = 0.7f;
 
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
@@ -38,7 +40,8 @@ public class PlayerController : MonoBehaviour
     private float direction = 0f;
 
     private float aversionStrength = 0f;
-    private float aversionDirection = 0f;
+    private float aversionDirectionRight = 0f;
+    private float aversionDirectionUp = 0f;
 
     private bool rotateAroundSelf = false;
 
@@ -129,25 +132,86 @@ public class PlayerController : MonoBehaviour
     private void CollisionAversion() {
         //Forward check
         RaycastHit hit;
-        if (!Physics.SphereCast(transform.position, 0.5f, transform.forward, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
+        if (!Physics.SphereCast(transform.position, SphereSize, transform.forward, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
             aversionStrength = 0f;
             return;
         }
 
-        aversionStrength = 1f - hit.distance / CheckDistance;
+        float up = 0f;
+        float right = 0f;
 
-        for (float i = 0.1f; i <= 1f; i += 0.1f) {
-            if (!Physics.SphereCast(transform.position, 0.5f, transform.forward * (1f - i) - transform.right * i, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
-                aversionDirection = i * -1f;
-                break;
+        if (Physics.SphereCast(transform.position, SphereSize, new Vector3(transform.forward.x, 0f, transform.forward.z), out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
+            right = 1f;
+        }
+        else {
+            up = 1f;
+        }
+
+        aversionStrength = Mathf.Clamp(1f - hit.distance / CheckDistance, 0.5f, 1f);
+        aversionDirectionRight = 0f;
+        aversionDirectionUp = 0f;
+        float avgStrengthLeft = 0f;
+        float avgStrengthRight = 0f;
+        float avgStrengtDown = 0f;
+        float avgStrengthUp = 0f;
+
+        if (right > 0f) {
+            for (float i = 0.1f; i <= 1f; i += 0.1f) {
+                if (Physics.SphereCast(transform.position, SphereSize, transform.forward * (1f - i) - transform.right * i, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
+                    avgStrengthLeft += hit.distance;
+                }
+                else {
+                    aversionDirectionRight = -1f;
+                    break;
+                }
+
+                if (Physics.SphereCast(transform.position, SphereSize, transform.forward * (1f - i) + transform.right * i, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
+                    avgStrengthRight += hit.distance;
+                }
+                else {
+                    aversionDirectionRight = 1f;
+                    break;
+                }
             }
-            if (!Physics.SphereCast(transform.position, 0.5f, transform.forward * (1f - i) + transform.right * i, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
-                aversionDirection = i;
-                break;
+
+            if (aversionDirectionRight == 0f) {
+                if (avgStrengthLeft >= avgStrengthRight) {
+                    aversionDirectionRight = -1f;
+                }
+                else {
+                    aversionDirectionRight = 1f;
+                }
             }
         }
 
-        aversionDirection = 1f;
+        if (up > 0f) {
+            for (float i = 0.1f; i <= 1f; i += 0.1f) {
+                if (Physics.SphereCast(transform.position, SphereSize, transform.forward * (1f - i) - transform.up * i, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
+                    avgStrengtDown += hit.distance;
+                }
+                else {
+                    aversionDirectionUp = -1f;
+                    break;
+                }
+
+                if (Physics.SphereCast(transform.position, SphereSize, transform.forward * (1f - i) + transform.up * i, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
+                    avgStrengthUp += hit.distance;
+                }
+                else {
+                    aversionDirectionUp = 1f;
+                    break;
+                }
+            }
+
+            if (aversionDirectionUp == 0f) {
+                if (avgStrengtDown >= avgStrengthUp) {
+                    aversionDirectionUp = -1f;
+                }
+                else {
+                    aversionDirectionUp = 1f;
+                }
+            }
+        }
     }
 
     private void ApplyRotation() {
@@ -169,9 +233,10 @@ public class PlayerController : MonoBehaviour
         if (targetDirection.sqrMagnitude < 0.01f && aversionStrength < 0.01f)
             return;
 
-        float rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirection * aversionStrength * 3f;
+        float rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
+        float rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
         transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
-        transform.Rotate(targetDirection.y * RotateSpeed, 0f, 0f);
+        transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
     }
 
     private void ApplyMovement() {
