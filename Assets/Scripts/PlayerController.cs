@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
     public float BindRotationSpeed = 120f;
+    public float BoostSpeed = 5f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -267,7 +268,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnJump() {
-        flapSpeed = 5f;
+        flapSpeed = BoostSpeed;
     }
 
     private void OnRightStick(InputValue value) {
