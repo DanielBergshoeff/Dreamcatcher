@@ -46,6 +46,12 @@ public class PlayerController : MonoBehaviour
 
     private bool rotateAroundSelf = false;
 
+    public float PathBonusSpeed = 10f;
+    private bool inPath = false;
+    private Transform pathParent;
+    private int currentPath = 0;
+    private int pathDir = 1;
+
     private void Awake() {
         Instance = this;
         body = transform.GetChild(0);
@@ -121,7 +127,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        CollisionAversion();
+        //CollisionAversion();
         ApplyRotation();
     }
 
@@ -231,13 +237,24 @@ public class PlayerController : MonoBehaviour
         body.rotation = Quaternion.Euler(new Vector3(body.rotation.eulerAngles.x, body.rotation.eulerAngles.y, wingPosition * -60f));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
 
-        if (targetDirection.sqrMagnitude < 0.01f && aversionStrength < 0.01f)
-            return;
+        if (!inPath) {
+            float rotationHorizontal = 0f;
+            float rotationVertical = 0f;
 
-        float rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
-        float rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
-        transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
-        transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
+            if (targetDirection.sqrMagnitude < 0.01f && aversionStrength < 0.01f)
+                return;
+
+            rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
+            rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
+
+            transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
+            transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
+        }
+        else {
+            Vector3 targetDir = pathParent.GetChild(currentPath).position - transform.position;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 2f, 0f);
+            transform.rotation = Quaternion.LookRotation(newDir);
+        }
     }
 
     private void ApplyMovement() {
@@ -254,7 +271,21 @@ public class PlayerController : MonoBehaviour
         bonusSpeed += downward * Time.deltaTime * DownwardsSpeedBonus;
 
         float speed = MoveSpeed + bonusSpeed + flapSpeed;
-        transform.position = transform.position + transform.forward * Time.deltaTime * speed;
+
+        if(!inPath)
+            transform.position = transform.position + transform.forward * Time.deltaTime * speed;
+        else {
+            if((transform.position - pathParent.GetChild(currentPath).position).sqrMagnitude < 0.005f) {
+                currentPath += pathDir;
+                if (currentPath < 0 || currentPath > pathParent.childCount - 1) {
+                    inPath = false;
+                    return;
+                }
+            }
+
+            Vector3 dir = pathParent.GetChild(currentPath).position - transform.position;
+            transform.position = transform.position + dir.normalized * Time.deltaTime * speed;
+        }
     }
 
     private void RotateAroundPillar() {
@@ -291,6 +322,27 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("Portal")) {
             GoThroughPortal();
+        }
+
+        if (other.CompareTag("Path")) {
+            if (!inPath) {
+                pathParent = other.transform.parent;
+                if (pathParent.GetChild(0) == other.transform) {
+                    currentPath = 1;
+                    pathDir = 1;
+                }
+                else {
+                    currentPath = pathParent.childCount - 2;
+                    pathDir = -1;
+                }
+
+                bonusSpeed += PathBonusSpeed;
+                inPath = true;
+            }
+            /*else {
+                Debug.Log("End path");
+                inPath = false;
+            }*/
         }
 
         if (inPillar == true)
