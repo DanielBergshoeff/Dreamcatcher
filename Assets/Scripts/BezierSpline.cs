@@ -9,7 +9,18 @@ public class BezierSpline : MonoBehaviour
 	[SerializeField]
 	private BezierControlPointMode[] modes;
 
-	public int ControlPointCount {
+	[HideInInspector]
+	public float TotalDistance;
+	public int Segments = 100;
+
+    private void Start() {
+		TotalDistance = 0f;
+        for (int i = 0; i < Segments; i++) {
+			TotalDistance += (GetPoint(1f / Segments * i) - GetPoint(1f / Segments * (i + 1))).magnitude;
+        }
+    }
+
+    public int ControlPointCount {
 		get {
 			return points.Length;
 		}
