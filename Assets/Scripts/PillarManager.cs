@@ -19,6 +19,8 @@ public class PillarManager : MonoBehaviour
     public GameObject OtherPortal;
     public GameObject OtherWorld;
 
+    public float PortalHeight = 10f;
+
     public bool InstantPortal = false;
 
     private List<LineRenderer> myLineRenderers;
@@ -68,7 +70,7 @@ public class PillarManager : MonoBehaviour
         }
 
         avgPosition = avgPosition / AllPillars.Count;
-        avgPosition += Vector3.up * 10f;
+        avgPosition += Vector3.up * PortalHeight;
         go.transform.position = avgPosition;
 
         MyPortal = go;
