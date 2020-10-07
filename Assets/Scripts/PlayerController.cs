@@ -253,9 +253,8 @@ public class PlayerController : MonoBehaviour
             transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
         }
         else {
-
             Vector3 targetDir = PathSpline.GetPoint((pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance) - transform.position;
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 5f, 0f);
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 3f, 0f);
             transform.rotation = Quaternion.LookRotation(newDir);
         }
     }
