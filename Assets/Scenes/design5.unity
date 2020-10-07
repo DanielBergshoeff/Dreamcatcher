@@ -1731,6 +1731,7 @@ MonoBehaviour:
   MyPortal: {fileID: 0}
   OtherPortal: {fileID: 1121354646}
   OtherWorld: {fileID: 1975535146}
+  PortalHeight: 10
   InstantPortal: 0
 --- !u!1001 &135820204
 PrefabInstance:
@@ -11164,7 +11165,7 @@ PrefabInstance:
     - target: {fileID: 8520806009576895760, guid: 886db7f689b6f804d9e92531c0ecfbac,
         type: 3}
       propertyPath: m_TurnSpeed
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 886db7f689b6f804d9e92531c0ecfbac, type: 3}
