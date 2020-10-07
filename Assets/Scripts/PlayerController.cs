@@ -47,9 +47,11 @@ public class PlayerController : MonoBehaviour
     private bool rotateAroundSelf = false;
 
     public float PathBonusSpeed = 10f;
+
+    private BezierSpline PathSpline;
     private bool inPath = false;
     private Transform pathParent;
-    private int currentPath = 0;
+    private float pathCurrentPosition = 0f;
     private int pathDir = 1;
 
     private void Awake() {
@@ -251,8 +253,8 @@ public class PlayerController : MonoBehaviour
             transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
         }
         else {
-            Vector3 targetDir = pathParent.GetChild(currentPath).position - transform.position;
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 2f, 0f);
+            Vector3 targetDir = PathSpline.GetPoint((pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance) - transform.position;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 3f, 0f);
             transform.rotation = Quaternion.LookRotation(newDir);
         }
     }
@@ -272,20 +274,14 @@ public class PlayerController : MonoBehaviour
 
         float speed = MoveSpeed + bonusSpeed + flapSpeed;
 
-        if(!inPath)
-            transform.position = transform.position + transform.forward * Time.deltaTime * speed;
-        else {
-            if((transform.position - pathParent.GetChild(currentPath).position).sqrMagnitude < 0.005f) {
-                currentPath += pathDir;
-                if (currentPath < 0 || currentPath > pathParent.childCount - 1) {
-                    inPath = false;
-                    return;
-                }
+        if (inPath) { 
+            pathCurrentPosition += speed * Time.deltaTime * pathDir;
+            if(pathCurrentPosition > PathSpline.TotalDistance || pathCurrentPosition < 0f) {
+                inPath = false;
             }
-
-            Vector3 dir = pathParent.GetChild(currentPath).position - transform.position;
-            transform.position = transform.position + dir.normalized * Time.deltaTime * speed;
         }
+
+        transform.position = transform.position + transform.forward * Time.deltaTime * speed;
     }
 
     private void RotateAroundPillar() {
@@ -327,22 +323,20 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Path")) {
             if (!inPath) {
                 pathParent = other.transform.parent;
+                PathSpline = pathParent.GetComponent<BezierSpline>();
+
                 if (pathParent.GetChild(0) == other.transform) {
-                    currentPath = 1;
+                    pathCurrentPosition = 0f;
                     pathDir = 1;
                 }
                 else {
-                    currentPath = pathParent.childCount - 2;
+                    pathCurrentPosition = PathSpline.TotalDistance;
                     pathDir = -1;
                 }
 
                 bonusSpeed += PathBonusSpeed;
                 inPath = true;
             }
-            /*else {
-                Debug.Log("End path");
-                inPath = false;
-            }*/
         }
 
         if (inPillar == true)
