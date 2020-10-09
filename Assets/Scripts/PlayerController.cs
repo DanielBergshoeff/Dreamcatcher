@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
     public float BindRotationSpeed = 120f;
+    public float BoostSpeed = 5f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -44,6 +45,15 @@ public class PlayerController : MonoBehaviour
     private float aversionDirectionUp = 0f;
 
     private bool rotateAroundSelf = false;
+
+    public float PathBonusSpeed = 10f;
+
+    private BezierSpline PathSpline;
+    private bool inPath = false;
+    private Transform pathParent;
+    private float pathCurrentPosition = 0f;
+    private int pathDir = 1;
+    private float pathCoolDown = 0f;
 
     private void Awake() {
         Instance = this;
@@ -108,6 +118,9 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if (pathCoolDown > 0f)
+            pathCoolDown -= Time.deltaTime;
+
         if (aroundPillar) {
             RotateAroundPillar();
             return;
@@ -230,13 +243,24 @@ public class PlayerController : MonoBehaviour
         body.rotation = Quaternion.Euler(new Vector3(body.rotation.eulerAngles.x, body.rotation.eulerAngles.y, wingPosition * -60f));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
 
-        if (targetDirection.sqrMagnitude < 0.01f && aversionStrength < 0.01f)
-            return;
+        if (!inPath) {
+            float rotationHorizontal = 0f;
+            float rotationVertical = 0f;
 
-        float rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
-        float rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
-        transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
-        transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
+            if (targetDirection.sqrMagnitude < 0.01f && aversionStrength < 0.01f)
+                return;
+
+            rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
+            rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
+
+            transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
+            transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
+        }
+        else {
+            Vector3 targetDir = PathSpline.GetPoint((pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance) - transform.position;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 3f, 0f);
+            transform.rotation = Quaternion.LookRotation(newDir);
+        }
     }
 
     private void ApplyMovement() {
@@ -253,6 +277,15 @@ public class PlayerController : MonoBehaviour
         bonusSpeed += downward * Time.deltaTime * DownwardsSpeedBonus;
 
         float speed = MoveSpeed + bonusSpeed + flapSpeed;
+
+        if (inPath) { 
+            pathCurrentPosition += speed * Time.deltaTime * pathDir;
+            if(pathCurrentPosition > PathSpline.TotalDistance || pathCurrentPosition < 0f) {
+                inPath = false;
+                pathCoolDown = 1f;
+            }
+        }
+
         transform.position = transform.position + transform.forward * Time.deltaTime * speed;
     }
 
@@ -267,7 +300,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnJump() {
-        flapSpeed = 5f;
+        flapSpeed = BoostSpeed;
     }
 
     private void OnRightStick(InputValue value) {
@@ -290,6 +323,25 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("Portal")) {
             GoThroughPortal();
+        }
+
+        if (other.CompareTag("Path")) {
+            if (!inPath && pathCoolDown <= 0f) {
+                pathParent = other.transform.parent;
+                PathSpline = pathParent.GetComponent<BezierSpline>();
+
+                if (pathParent.GetChild(0) == other.transform) {
+                    pathCurrentPosition = 0f;
+                    pathDir = 1;
+                }
+                else {
+                    pathCurrentPosition = PathSpline.TotalDistance;
+                    pathDir = -1;
+                }
+
+                bonusSpeed += PathBonusSpeed;
+                inPath = true;
+            }
         }
 
         if (inPillar == true)
