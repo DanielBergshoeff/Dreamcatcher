@@ -29,10 +29,11 @@ public class PlayerController : MonoBehaviour
 
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
-    private float downwardSpeed = 0f;
+    private float pathBonusSpeed = 0f;
 
     private Vector2 targetDirection;
     private float wingPosition = 0f;
+    private float wingPositionVertical = 0f;
     private Transform body;
 
     private bool inPillar = false;
@@ -162,7 +163,7 @@ public class PlayerController : MonoBehaviour
             up = 1f;
         }
 
-        aversionStrength = Mathf.Clamp(1f - hit.distance / CheckDistance, 0.5f, 1f);
+        aversionStrength = Mathf.Clamp(1f - hit.distance / CheckDistance, 0, 1f);
         aversionDirectionRight = 0f;
         aversionDirectionUp = 0f;
         float avgStrengthLeft = 0f;
@@ -230,48 +231,57 @@ public class PlayerController : MonoBehaviour
     }
 
     private void ApplyRotation() {
+        float rotation = 0f;
+        float vertical = 0f;
+
         if (wingPosition > 1f * targetDirection.x && targetDirection.x < 0f) {
-            if (wingPosition < 0f) {
-                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
-            }
-            else {
-                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed * ReturnToNeutralBoost;
-            }
+            rotation = targetDirection.x * Time.deltaTime * ((wingPosition < 0f) ? 1f : BodyRotateSpeed);
         }
         else if (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f) {
-            if (wingPosition > 0f) {
-                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
-            }
-            else {
-                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed * ReturnToNeutralBoost;
-            }
+            rotation = targetDirection.x * Time.deltaTime * ((wingPosition > 0f) ? 1f : BodyRotateSpeed);
         }
 
-        body.rotation = Quaternion.Euler(new Vector3(body.rotation.eulerAngles.x, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
+        if(wingPositionVertical > 1f * targetDirection.y && targetDirection.y < 0f) {
+            vertical = targetDirection.y * Time.deltaTime * ((wingPositionVertical < 0f) ? 1f : BodyRotateSpeed);
+        }
+        else if(wingPositionVertical < 1f * targetDirection.y && targetDirection.y > 0f) {
+            vertical = targetDirection.y * Time.deltaTime * ((wingPositionVertical > 0f) ? 1f : BodyRotateSpeed);
+        }
+
+        wingPosition += rotation;
+        wingPositionVertical += vertical;
+
+        body.rotation = Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation / 2f, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
 
         if (!inPath) {
             float rotationHorizontal = 0f;
             float rotationVertical = 0f;
 
-            rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
-            rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
+            rotationHorizontal = wingPosition * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
+            rotationVertical = wingPositionVertical * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
 
-            transform.Rotate(0f, wingPosition * RotateSpeed, 0f);
+            transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
             transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
         }
         else {
-            Vector3 targetDir = PathSpline.GetPoint((pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance) - transform.position;
+            float percentage = (pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance;
+            pathBonusSpeed = percentage * PathBonusSpeed;
+            Vector3 targetDir = PathSpline.GetPoint(percentage) - transform.position;
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 3f, 0f);
             transform.rotation = Quaternion.LookRotation(newDir);
         }
     }
 
     private void ApplyMovement() {
-        if (bonusSpeed > 0f) {
+        if (bonusSpeed > 0f) 
             bonusSpeed -= Time.deltaTime;
-            FreeLookCam.Instance.BonusMoveSpeed = (bonusSpeed / 5) * 4;
-        }
+        
+
+        if (pathBonusSpeed > 0f)
+            pathBonusSpeed -= Time.deltaTime;
+
+        FreeLookCam.Instance.BonusMoveSpeed = ((bonusSpeed + pathBonusSpeed) / 5) * 4;
 
         if (flapSpeed > 0f)
             flapSpeed -= Time.deltaTime;
@@ -280,7 +290,7 @@ public class PlayerController : MonoBehaviour
         float downward = 1f - Mathf.Clamp(angle, 0f, MinDownwardsAngle) / MinDownwardsAngle;
         bonusSpeed += downward * Time.deltaTime * DownwardsSpeedBonus;
 
-        float speed = MoveSpeed + bonusSpeed + flapSpeed;
+        float speed = MoveSpeed + bonusSpeed + pathBonusSpeed + flapSpeed;
 
         if (inPath) { 
             pathCurrentPosition += speed * Time.deltaTime * pathDir;
