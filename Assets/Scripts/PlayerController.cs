@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private Transform pathParent;
     private float pathCurrentPosition = 0f;
     private int pathDir = 1;
+    private float pathCoolDown = 0f;
 
     private void Awake() {
         Instance = this;
@@ -117,6 +118,9 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if (pathCoolDown > 0f)
+            pathCoolDown -= Time.deltaTime;
+
         if (aroundPillar) {
             RotateAroundPillar();
             return;
@@ -129,7 +133,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        //CollisionAversion();
+        CollisionAversion();
         ApplyRotation();
     }
 
@@ -278,6 +282,7 @@ public class PlayerController : MonoBehaviour
             pathCurrentPosition += speed * Time.deltaTime * pathDir;
             if(pathCurrentPosition > PathSpline.TotalDistance || pathCurrentPosition < 0f) {
                 inPath = false;
+                pathCoolDown = 1f;
             }
         }
 
@@ -321,7 +326,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (other.CompareTag("Path")) {
-            if (!inPath) {
+            if (!inPath && pathCoolDown <= 0f) {
                 pathParent = other.transform.parent;
                 PathSpline = pathParent.GetComponent<BezierSpline>();
 
