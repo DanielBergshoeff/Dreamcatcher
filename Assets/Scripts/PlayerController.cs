@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     public float MoveSpeed = 3f;
+    public float BodyRotateSpeed = 0.5f;
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
     public float BindRotationSpeed = 120f;
@@ -229,31 +230,21 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyRotation() {
         if (wingPosition > 1f * targetDirection.x && targetDirection.x < 0f)
-            wingPosition += targetDirection.x * Time.deltaTime * 3f;
+            wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
         else if (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f)
-            wingPosition += targetDirection.x * Time.deltaTime * 3f;
-        else if (wingPosition > 0.03f && targetDirection.x <= 0.01f)
-            wingPosition -= Time.deltaTime * 3f;
-        else if (wingPosition < -0.03f && targetDirection.x >= -0.01f)
-            wingPosition += Time.deltaTime * 3f;
-        else if (Mathf.Abs(targetDirection.x) < 0.01f) {
-            wingPosition = 0f;
-        }
+            wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
 
-        body.rotation = Quaternion.Euler(new Vector3(body.rotation.eulerAngles.x, body.rotation.eulerAngles.y, wingPosition * -60f));
+        body.rotation = Quaternion.Euler(new Vector3(body.rotation.eulerAngles.x, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
 
         if (!inPath) {
             float rotationHorizontal = 0f;
             float rotationVertical = 0f;
 
-            if (targetDirection.sqrMagnitude < 0.01f && aversionStrength < 0.01f)
-                return;
-
             rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
             rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
 
-            transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
+            transform.Rotate(0f, wingPosition * RotateSpeed, 0f);
             transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
         }
         else {
@@ -318,7 +309,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Speed")) {
-            bonusSpeed = 10f;
+            bonusSpeed += 10f;
         }
 
         if (other.CompareTag("Portal")) {
