@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float BodyRotateSpeed = 0.5f;
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
+    public float ReturnToNeutralBoost = 2.0f;
     public float BindRotationSpeed = 120f;
     public float BoostSpeed = 5f;
 
@@ -229,10 +230,22 @@ public class PlayerController : MonoBehaviour
     }
 
     private void ApplyRotation() {
-        if (wingPosition > 1f * targetDirection.x && targetDirection.x < 0f)
-            wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
-        else if (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f)
-            wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
+        if (wingPosition > 1f * targetDirection.x && targetDirection.x < 0f) {
+            if (wingPosition < 0f) {
+                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
+            }
+            else {
+                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed * ReturnToNeutralBoost;
+            }
+        }
+        else if (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f) {
+            if (wingPosition > 0f) {
+                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
+            }
+            else {
+                wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed * ReturnToNeutralBoost;
+            }
+        }
 
         body.rotation = Quaternion.Euler(new Vector3(body.rotation.eulerAngles.x, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
