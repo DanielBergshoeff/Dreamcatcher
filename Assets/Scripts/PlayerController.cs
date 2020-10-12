@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float ReturnToNeutralBoost = 2.0f;
     public float BindRotationSpeed = 120f;
     public float BoostSpeed = 5f;
+    public float ReduceSpeedMultiplier = 5f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public float AversionMultiplier = 3f;
     public float SphereSize = 0.7f;
 
+    [SerializeField]
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
     private float pathBonusSpeed = 0f;
@@ -44,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private float direction = 0f;
 
     private float aversionStrength = 0f;
+    private float aversionStrengthVertical = 0f;
     private float aversionDirectionRight = 0f;
     private float aversionDirectionUp = 0f;
 
@@ -150,6 +153,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         if (!Physics.SphereCast(transform.position, SphereSize, transform.forward, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
             aversionStrength = 0f;
+            aversionStrengthVertical = 0f;
             return;
         }
 
@@ -158,12 +162,13 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.SphereCast(transform.position, SphereSize, new Vector3(transform.forward.x, 0f, transform.forward.z), out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
             right = 1f;
+            aversionStrength = Mathf.Clamp(1f - hit.distance / CheckDistance, 0, 1f);
         }
         else {
             up = 1f;
+            aversionStrengthVertical = Mathf.Clamp(1f - hit.distance / CheckDistance, 0, 1f);
         }
 
-        aversionStrength = Mathf.Clamp(1f - hit.distance / CheckDistance, 0, 1f);
         aversionDirectionRight = 0f;
         aversionDirectionUp = 0f;
         float avgStrengthLeft = 0f;
@@ -178,6 +183,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else {
                     aversionDirectionRight = -1f;
+                    Debug.DrawRay(transform.position, (transform.forward * (1f - i) - transform.right * i) * CheckDistance, Color.yellow);
                     break;
                 }
 
@@ -186,18 +192,23 @@ public class PlayerController : MonoBehaviour
                 }
                 else {
                     aversionDirectionRight = 1f;
+                    Debug.DrawRay(transform.position, (transform.forward * (1f - i) + transform.right * i) * CheckDistance, Color.yellow);
                     break;
                 }
             }
 
             if (aversionDirectionRight == 0f) {
                 if (avgStrengthLeft >= avgStrengthRight) {
+                    Debug.DrawRay(transform.position, (transform.forward - transform.right) * CheckDistance, Color.red);
                     aversionDirectionRight = -1f;
                 }
                 else {
+                    Debug.DrawRay(transform.position, (transform.forward + transform.right) * CheckDistance, Color.red);
                     aversionDirectionRight = 1f;
                 }
             }
+
+            Debug.Log(aversionDirectionRight);
         }
 
         if (up > 0f) {
@@ -233,36 +244,60 @@ public class PlayerController : MonoBehaviour
     private void ApplyRotation() {
         float rotation = 0f;
         float vertical = 0f;
+        bool boost = false;
 
-        if (wingPosition > 1f * targetDirection.x && targetDirection.x < 0f) {
-            rotation = targetDirection.x * Time.deltaTime * ((wingPosition < 0f) ? 1f : BodyRotateSpeed);
-        }
-        else if (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f) {
-            rotation = targetDirection.x * Time.deltaTime * ((wingPosition > 0f) ? 1f : BodyRotateSpeed);
+        float rotPlayer = 0f;
+        float rotAversion = 0f;
+        float rotPlayerVertical = 0f;
+        float rotAversionVertical = 0f;
+
+        //HORIZONTAL ROTATION
+        if ((wingPosition > 1f * targetDirection.x && targetDirection.x < 0f)
+            || (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f)) {
+            rotPlayer = targetDirection.x * (1f - aversionStrength);
         }
 
-        if(wingPositionVertical > 1f * targetDirection.y && targetDirection.y < 0f) {
-            vertical = targetDirection.y * Time.deltaTime * ((wingPositionVertical < 0f) ? 1f : BodyRotateSpeed);
+        rotAversion = aversionDirectionRight * aversionStrength;
+        
+        float totalRot = rotPlayer + rotAversion;
+
+        if ((totalRot > 0f && wingPosition < 0f) || (totalRot < 0f && wingPosition > 0f))
+            boost = true;
+        
+        if((totalRot > 0f && wingPosition < 1f) || (totalRot < 0f && wingPosition > -1f))
+            rotation = totalRot * Time.deltaTime * (boost ? BodyRotateSpeed : ReturnToNeutralBoost);
+
+        //VERTICAL ROTATION
+        if ((wingPositionVertical > 1f * targetDirection.y && targetDirection.y < 0f)
+            || (wingPositionVertical < 1f * targetDirection.y && targetDirection.y > 0f)) {
+            rotPlayerVertical = targetDirection.y * (1f - aversionStrengthVertical);
         }
-        else if(wingPositionVertical < 1f * targetDirection.y && targetDirection.y > 0f) {
-            vertical = targetDirection.y * Time.deltaTime * ((wingPositionVertical > 0f) ? 1f : BodyRotateSpeed);
-        }
+
+        rotAversionVertical = aversionDirectionUp * aversionStrengthVertical;
+        //Debug.Log("Vertical: " + rotAversionVertical);
+        float totalRotVertical = rotPlayerVertical - rotAversionVertical;
+
+        if ((totalRotVertical > 0f && wingPositionVertical < 1f) || (totalRotVertical < 0f && wingPositionVertical > -1f))
+            vertical = totalRotVertical * Time.deltaTime * (boost ? BodyRotateSpeed : ReturnToNeutralBoost);
 
         wingPosition += rotation;
         wingPositionVertical += vertical;
 
-        body.rotation = Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation / 2f, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
+        body.rotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation / 2f, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
+        float speed = MoveSpeed + bonusSpeed + pathBonusSpeed + flapSpeed;
 
         if (!inPath) {
-            float rotationHorizontal = 0f;
-            float rotationVertical = 0f;
-
-            rotationHorizontal = wingPosition * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
-            rotationVertical = wingPositionVertical * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
-
-            transform.Rotate(0f, rotationHorizontal * RotateSpeed, 0f);
-            transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
+            float f = wingPosition * RotateSpeed * (speed / 8f);
+            float f2 = f * aversionStrength * AversionMultiplier;
+            transform.Rotate(0f, f + f2, 0f);
+            //Debug.Log("Horizontal position: " + wingPosition);
+            float f3 = wingPositionVertical * RotateSpeed * (speed / 8f);
+            float f4 = f3 * aversionStrengthVertical * AversionMultiplier;
+            float total = transform.eulerAngles.x + f3 + f4;
+            if((Mathf.Abs(total) < MaxRotation / 2f && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotation &&  Mathf.Abs(total) > 180f))
+                transform.Rotate(f3 + f4, 0f, 0f);
+            //Debug.Log("Vertical position: " + wingPositionVertical);
         }
         else {
             float percentage = (pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance;
@@ -275,16 +310,16 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyMovement() {
         if (bonusSpeed > 0f) 
-            bonusSpeed -= Time.deltaTime;
+            bonusSpeed -= bonusSpeed * 0.01f * Time.deltaTime * ReduceSpeedMultiplier;
         
 
         if (pathBonusSpeed > 0f)
-            pathBonusSpeed -= Time.deltaTime;
+            pathBonusSpeed -= pathBonusSpeed * 0.01f * Time.deltaTime * ReduceSpeedMultiplier;
 
         FreeLookCam.Instance.BonusMoveSpeed = ((bonusSpeed + pathBonusSpeed) / 5) * 4;
 
         if (flapSpeed > 0f)
-            flapSpeed -= Time.deltaTime;
+            flapSpeed -= flapSpeed * 0.01f * Time.deltaTime * ReduceSpeedMultiplier;
 
         float angle = Vector3.Angle(-Vector3.up, transform.forward);
         float downward = 1f - Mathf.Clamp(angle, 0f, MinDownwardsAngle) / MinDownwardsAngle;
@@ -300,7 +335,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        transform.position = transform.position + transform.forward * Time.deltaTime * speed;
+        transform.position = transform.position + body.forward * Time.deltaTime * speed;
     }
 
     private void RotateAroundPillar() {
@@ -332,7 +367,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Speed")) {
-            bonusSpeed += 10f;
+            bonusSpeed += BoostSpeed;
         }
 
         if (other.CompareTag("Portal")) {
