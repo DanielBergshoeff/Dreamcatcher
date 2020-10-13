@@ -13,25 +13,26 @@ public class CreatureManager : MonoBehaviour
         AllCreatures = new List<Creature>();
     }
 
-    public void CheckForButterfly(Vector3 p1, Vector3 p2, Vector3 p3) {
+    public bool CheckForButterfly(Vector3 p1, Vector3 p2, Vector3 p3) {
         foreach(Creature c in AllCreatures) {
             if(PointInTriangle(c.transform.position, p1, p2, p3)) {
                 c.SwitchToButterfly();
             }
         }
 
-        CheckForFinish();
+        return CheckForFinish();
     }
 
-    public void CheckForFinish() {
+    public bool CheckForFinish() {
         foreach (Creature c in AllCreatures) {
             if (!c.switchNow) {
-                return;
+                return false;
             }
         }
 
         //Pattern complete
         PillarManager.Instance.CreatePortal();
+        return true;
     }
 
     float sign(Vector3 p1, Vector3 p2, Vector3 p3) {

@@ -7,7 +7,7 @@ public class FollowCamera : PivotBasedCameraRig
 {
     public static FollowCamera Instance;
 
-    public Transform Target;
+    public new Transform Target;
     public float RotateSpeed = 2f;
     public float MoveSpeed = 2f;
     public float BonusMoveSpeed = 0f;

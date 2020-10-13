@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public float ReturnToNeutralBoost = 2.0f;
     public float BoostSpeed = 5f;
     public float ReduceSpeedMultiplier = 5f;
+    public float BoostCooldown = 3f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -30,8 +32,8 @@ public class PlayerController : MonoBehaviour
     [Header("Pillars")]
     public float BindRotationSpeed = 120f;
     public bool BindRotation = false;
+    public float BindCooldown = 0.5f;
 
-    [SerializeField]
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
     private float pathBonusSpeed = 0f;
@@ -63,10 +65,15 @@ public class PlayerController : MonoBehaviour
     private float pathCurrentPosition = 0f;
     private int pathDir = 1;
     private float pathCoolDown = 0f;
+    private float boostCooldown = 0f;
+    private float bindCooldown = 0f;
+
+    private AudioSource myAudioSource;
 
     private void Awake() {
         Instance = this;
         body = transform.GetChild(0);
+        myAudioSource = GetComponent<AudioSource>();
     }
 
     private void OnQ() {
@@ -114,28 +121,41 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnBind() {
-        if (!inPillar)
+        Debug.Log(bindCooldown);
+        if (!inPillar || bindCooldown > 0f)
             return;
 
         pillarPoint = new Vector3(currentPillar.transform.position.x, transform.position.y, currentPillar.transform.position.z);
 
         if (!BindRotation) {
-            PillarManager.Instance.AddPillarToBind(currentPillar, pillarPoint);
+            switch(PillarManager.Instance.AddPillarToBind(currentPillar, pillarPoint)) {
+                case PillarBoundType.Bound:
+                    myAudioSource.PlayOneShot(AudioManager.Instance.ConnectPillar);
+                    TriangleCanvas.SetActive(false);
+                    inPillar = false;
+                    break;
+                case PillarBoundType.Last:
+                    myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
+                    bindCooldown = BindCooldown;
+                    break;
+                case PillarBoundType.Portal:
+                    myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
+                    myAudioSource.PlayOneShot(AudioManager.Instance.CompleteArea);
+                    TriangleCanvas.SetActive(false);
+                    inPillar = false;
+                    break;
+            }
             return;
         }
 
         aroundPillar = true;
-        TriangleCanvas.SetActive(false);
-        currentRot = 0f;
 
+        currentRot = 0f;
         Vector3 dir = pillarPoint - transform.position;
         float angleRight = Vector3.Angle(dir, transform.right);
         float angleLeft = Vector3.Angle(dir, -transform.right);
 
         direction = angleRight > angleLeft ? -1f : 1f;
-
-        inPillar = false;
-
         FreeLookCam.Instance.RotatingAroundPillar = true;
     }
 
@@ -143,6 +163,12 @@ public class PlayerController : MonoBehaviour
     void Update() {
         if (pathCoolDown > 0f)
             pathCoolDown -= Time.deltaTime;
+
+        if (boostCooldown > 0f)
+            boostCooldown -= Time.deltaTime;
+
+        if (bindCooldown > 0f)
+            bindCooldown -= Time.deltaTime;
 
         if (aroundPillar) {
             RotateAroundPillar();
@@ -363,8 +389,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnJump() {
-        flapSpeed = BoostSpeed;
+    private void OnBoost() {
+        if (boostCooldown > 0f)
+            return;
+
+        boostCooldown = BoostCooldown;
+        flapSpeed += BoostSpeed;
     }
 
     private void OnRightStick(InputValue value) {
