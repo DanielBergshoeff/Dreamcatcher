@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float BoostSpeed = 5f;
     public float ReduceSpeedMultiplier = 5f;
     public float BoostCooldown = 3f;
+    public float BounceBack = 1f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -161,7 +162,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         if (pathCoolDown > 0f)
             pathCoolDown -= Time.deltaTime;
 
@@ -287,6 +288,7 @@ public class PlayerController : MonoBehaviour
         float rotation = 0f;
         float vertical = 0f;
         bool boost = false;
+        bool verticalBoost = false;
 
         float rotPlayer = 0f;
         float rotAversion = 0f;
@@ -297,6 +299,12 @@ public class PlayerController : MonoBehaviour
         if ((wingPosition > 1f * targetDirection.x && targetDirection.x < 0f)
             || (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f)) {
             rotPlayer = targetDirection.x * (1f - aversionStrength);
+        }
+        else if (wingPosition < 0f && wingPosition < -0.05f) {
+            rotPlayer = BounceBack * (1f - aversionStrength);
+        }
+        else if (wingPosition > 0f && wingPosition > 0.05f) {
+            rotPlayer = -BounceBack * (1f - aversionStrength);
         }
 
         rotAversion = aversionDirectionRight * aversionStrength;
@@ -314,13 +322,22 @@ public class PlayerController : MonoBehaviour
             || (wingPositionVertical < 1f * targetDirection.y && targetDirection.y > 0f)) {
             rotPlayerVertical = targetDirection.y * (1f - aversionStrengthVertical);
         }
+        else if (wingPositionVertical < 0f && wingPositionVertical < -0.05f) {
+            rotPlayerVertical = BounceBack * (1f - aversionStrengthVertical);
+        }
+        else if (wingPositionVertical > 0f && wingPositionVertical > 0.05f) {
+            rotPlayerVertical = -BounceBack * (1f - aversionStrengthVertical);
+        }
 
         rotAversionVertical = aversionDirectionUp * aversionStrengthVertical;
         //Debug.Log("Vertical: " + rotAversionVertical);
         float totalRotVertical = rotPlayerVertical - rotAversionVertical;
 
+        if ((totalRotVertical > 0f && wingPositionVertical < 0f) || (totalRotVertical < 0f && wingPositionVertical > 0f))
+            verticalBoost = true;
+
         if ((totalRotVertical > 0f && wingPositionVertical < 1f) || (totalRotVertical < 0f && wingPositionVertical > -1f))
-            vertical = totalRotVertical * Time.deltaTime * (boost ? ReturnToNeutralBoost : BodyRotateSpeed);
+            vertical = totalRotVertical * Time.deltaTime * (verticalBoost ? ReturnToNeutralBoost : BodyRotateSpeed);
 
         wingPosition += rotation;
         wingPositionVertical += vertical;

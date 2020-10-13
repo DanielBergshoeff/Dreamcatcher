@@ -49,11 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 6
   BodyRotateSpeed: 0.8
-  RotateSpeed: 0.6
+  RotateSpeed: 1.5
   MaxRotation: 60
   MaxRotationVertical: 60
   MaxRotationVerticalBody: 20
-  ReturnToNeutralBoost: 1.6
+  ReturnToNeutralBoost: 2
   BoostSpeed: 5
   ReduceSpeedMultiplier: 10
   BoostCooldown: 3
@@ -577,7 +577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Target: {fileID: 1072539396571596676}
   m_AutoTargetPlayer: 0
-  m_UpdateType: 1
+  m_UpdateType: 0
   m_MoveSpeed: 8
   BonusMoveSpeed: 0
   m_TurnSpeed: 1
@@ -854,7 +854,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
