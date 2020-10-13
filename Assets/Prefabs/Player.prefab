@@ -580,11 +580,11 @@ MonoBehaviour:
   m_UpdateType: 1
   m_MoveSpeed: 8
   BonusMoveSpeed: 0
-  m_TurnSpeed: 1.5
+  m_TurnSpeed: 1
   m_TurnSmoothing: 0
   m_TiltMax: 75
   m_TiltMin: 45
-  m_LockCursor: 0
+  m_LockCursor: 1
   m_VerticalAutoReturn: 0
   RightStickValues: {x: 0, y: 0}
   RotateSpeed: 5

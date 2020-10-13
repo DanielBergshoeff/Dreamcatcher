@@ -111,8 +111,8 @@ public class FreeLookCam : PivotBasedCameraRig
 
         if (!resetRot) {
             // Read the user input
-            var x = RightStickValues.x;
-            var y = RightStickValues.y;
+            var x = RightStickValues.x + Input.GetAxis("Mouse X");
+            var y = RightStickValues.y + Input.GetAxis("Mouse Y");
 
             // Adjust the look angle by an amount proportional to the turn speed and horizontal input.
             m_LookAngle += x * m_TurnSpeed;
@@ -139,7 +139,7 @@ public class FreeLookCam : PivotBasedCameraRig
         else {
             m_TransformTargetRot = Quaternion.LookRotation(-Target.transform.forward, Vector3.up);
 
-            if (RightStickValues.sqrMagnitude > 0.01f) {
+            if (RightStickValues.sqrMagnitude > 0.01f || Input.GetAxis("Mouse X") > 0.1f || Input.GetAxis("Mouse Y") > 0.1f) {
                 resetRot = false;
             }
 
