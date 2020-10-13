@@ -12,8 +12,9 @@ public class PlayerController : MonoBehaviour
     public float BodyRotateSpeed = 0.5f;
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
-    public float BindRotationSpeed = 120f;
+    public float ReturnToNeutralBoost = 2.0f;
     public float BoostSpeed = 5f;
+    public float ReduceSpeedMultiplier = 5f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -26,12 +27,18 @@ public class PlayerController : MonoBehaviour
     public float AversionMultiplier = 3f;
     public float SphereSize = 0.7f;
 
+    [Header("Pillars")]
+    public float BindRotationSpeed = 120f;
+    public bool BindRotation = false;
+
+    [SerializeField]
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
-    private float downwardSpeed = 0f;
+    private float pathBonusSpeed = 0f;
 
     private Vector2 targetDirection;
     private float wingPosition = 0f;
+    private float wingPositionVertical = 0f;
     private Transform body;
 
     private bool inPillar = false;
@@ -42,6 +49,7 @@ public class PlayerController : MonoBehaviour
     private float direction = 0f;
 
     private float aversionStrength = 0f;
+    private float aversionStrengthVertical = 0f;
     private float aversionDirectionRight = 0f;
     private float aversionDirectionUp = 0f;
 
@@ -59,6 +67,14 @@ public class PlayerController : MonoBehaviour
     private void Awake() {
         Instance = this;
         body = transform.GetChild(0);
+    }
+
+    private void OnQ() {
+        OnLeftShoulder();
+    }
+
+    private void OnE() {
+        OnRightShoulder();
     }
 
     private void OnLeftShoulder() {
@@ -101,8 +117,14 @@ public class PlayerController : MonoBehaviour
         if (!inPillar)
             return;
 
-        aroundPillar = true;
         pillarPoint = new Vector3(currentPillar.transform.position.x, transform.position.y, currentPillar.transform.position.z);
+
+        if (!BindRotation) {
+            PillarManager.Instance.AddPillarToBind(currentPillar, pillarPoint);
+            return;
+        }
+
+        aroundPillar = true;
         TriangleCanvas.SetActive(false);
         currentRot = 0f;
 
@@ -148,6 +170,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         if (!Physics.SphereCast(transform.position, SphereSize, transform.forward, out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
             aversionStrength = 0f;
+            aversionStrengthVertical = 0f;
             return;
         }
 
@@ -156,12 +179,13 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.SphereCast(transform.position, SphereSize, new Vector3(transform.forward.x, 0f, transform.forward.z), out hit, CheckDistance, CollisionLayer, QueryTriggerInteraction.Ignore)) {
             right = 1f;
+            aversionStrength = Mathf.Clamp(1f - hit.distance / CheckDistance, 0, 1f);
         }
         else {
             up = 1f;
+            aversionStrengthVertical = Mathf.Clamp(1f - hit.distance / CheckDistance, 0, 1f);
         }
 
-        aversionStrength = Mathf.Clamp(1f - hit.distance / CheckDistance, 0.5f, 1f);
         aversionDirectionRight = 0f;
         aversionDirectionUp = 0f;
         float avgStrengthLeft = 0f;
@@ -176,6 +200,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else {
                     aversionDirectionRight = -1f;
+                    Debug.DrawRay(transform.position, (transform.forward * (1f - i) - transform.right * i) * CheckDistance, Color.yellow);
                     break;
                 }
 
@@ -184,15 +209,18 @@ public class PlayerController : MonoBehaviour
                 }
                 else {
                     aversionDirectionRight = 1f;
+                    Debug.DrawRay(transform.position, (transform.forward * (1f - i) + transform.right * i) * CheckDistance, Color.yellow);
                     break;
                 }
             }
 
             if (aversionDirectionRight == 0f) {
                 if (avgStrengthLeft >= avgStrengthRight) {
+                    Debug.DrawRay(transform.position, (transform.forward - transform.right) * CheckDistance, Color.red);
                     aversionDirectionRight = -1f;
                 }
                 else {
+                    Debug.DrawRay(transform.position, (transform.forward + transform.right) * CheckDistance, Color.red);
                     aversionDirectionRight = 1f;
                 }
             }
@@ -229,45 +257,90 @@ public class PlayerController : MonoBehaviour
     }
 
     private void ApplyRotation() {
-        if (wingPosition > 1f * targetDirection.x && targetDirection.x < 0f)
-            wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
-        else if (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f)
-            wingPosition += targetDirection.x * Time.deltaTime * BodyRotateSpeed;
+        float rotation = 0f;
+        float vertical = 0f;
+        bool boost = false;
 
-        body.rotation = Quaternion.Euler(new Vector3(body.rotation.eulerAngles.x, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
+        float rotPlayer = 0f;
+        float rotAversion = 0f;
+        float rotPlayerVertical = 0f;
+        float rotAversionVertical = 0f;
+
+        //HORIZONTAL ROTATION
+        if ((wingPosition > 1f * targetDirection.x && targetDirection.x < 0f)
+            || (wingPosition < 1f * targetDirection.x && targetDirection.x > 0f)) {
+            rotPlayer = targetDirection.x * (1f - aversionStrength);
+        }
+
+        rotAversion = aversionDirectionRight * aversionStrength;
+        
+        float totalRot = rotPlayer + rotAversion;
+
+        if ((totalRot > 0f && wingPosition < 0f) || (totalRot < 0f && wingPosition > 0f))
+            boost = true;
+        
+        if((totalRot > 0f && wingPosition < 1f) || (totalRot < 0f && wingPosition > -1f))
+            rotation = totalRot * Time.deltaTime * (boost ? ReturnToNeutralBoost : BodyRotateSpeed);
+
+        //VERTICAL ROTATION
+        if ((wingPositionVertical > 1f * targetDirection.y && targetDirection.y < 0f)
+            || (wingPositionVertical < 1f * targetDirection.y && targetDirection.y > 0f)) {
+            rotPlayerVertical = targetDirection.y * (1f - aversionStrengthVertical);
+        }
+
+        rotAversionVertical = aversionDirectionUp * aversionStrengthVertical;
+        //Debug.Log("Vertical: " + rotAversionVertical);
+        float totalRotVertical = rotPlayerVertical - rotAversionVertical;
+
+        if ((totalRotVertical > 0f && wingPositionVertical < 1f) || (totalRotVertical < 0f && wingPositionVertical > -1f))
+            vertical = totalRotVertical * Time.deltaTime * (boost ? ReturnToNeutralBoost : BodyRotateSpeed);
+
+        wingPosition += rotation;
+        wingPositionVertical += vertical;
+
+        body.localRotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation, 0f, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
+        float speed = MoveSpeed + bonusSpeed + pathBonusSpeed + flapSpeed;
 
         if (!inPath) {
-            float rotationHorizontal = 0f;
-            float rotationVertical = 0f;
-
-            rotationHorizontal = targetDirection.x * (1f - aversionStrength) + aversionDirectionRight * aversionStrength * AversionMultiplier;
-            rotationVertical = targetDirection.y * (1f - aversionStrength) - aversionDirectionUp * aversionStrength * AversionMultiplier;
-
-            transform.Rotate(0f, wingPosition * RotateSpeed, 0f);
-            transform.Rotate(rotationVertical * RotateSpeed, 0f, 0f);
+            float f = wingPosition * RotateSpeed * (speed / 8f);
+            float f2 = f * aversionStrength * AversionMultiplier;
+            transform.Rotate(0f, f + f2, 0f);
+            //Debug.Log("Horizontal position: " + wingPosition);
+            float f3 = wingPositionVertical * RotateSpeed * (speed / 8f);
+            float f4 = f3 * aversionStrengthVertical * AversionMultiplier;
+            float total = transform.eulerAngles.x + f3 + f4;
+            if((Mathf.Abs(total) < MaxRotation && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotation &&  Mathf.Abs(total) > 180f))
+                transform.Rotate(f3 + f4, 0f, 0f);
+            //Debug.Log("Vertical position: " + wingPositionVertical);
         }
         else {
-            Vector3 targetDir = PathSpline.GetPoint((pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance) - transform.position;
+            float percentage = (pathCurrentPosition + 1f * pathDir) / PathSpline.TotalDistance;
+            pathBonusSpeed = percentage * PathBonusSpeed;
+            Vector3 targetDir = PathSpline.GetPoint(percentage) - transform.position;
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 3f, 0f);
             transform.rotation = Quaternion.LookRotation(newDir);
         }
     }
 
     private void ApplyMovement() {
-        if (bonusSpeed > 0f) {
-            bonusSpeed -= Time.deltaTime;
-            FreeLookCam.Instance.BonusMoveSpeed = (bonusSpeed / 5) * 4;
-        }
+        if (bonusSpeed > 0f) 
+            bonusSpeed -= bonusSpeed * 0.01f * Time.deltaTime * ReduceSpeedMultiplier;
+        
+
+        if (pathBonusSpeed > 0f)
+            pathBonusSpeed -= pathBonusSpeed * 0.01f * Time.deltaTime * ReduceSpeedMultiplier;
+
+        FreeLookCam.Instance.BonusMoveSpeed = ((bonusSpeed + pathBonusSpeed) / 5) * 4;
 
         if (flapSpeed > 0f)
-            flapSpeed -= Time.deltaTime;
+            flapSpeed -= flapSpeed * 0.01f * Time.deltaTime * ReduceSpeedMultiplier;
 
         float angle = Vector3.Angle(-Vector3.up, transform.forward);
         float downward = 1f - Mathf.Clamp(angle, 0f, MinDownwardsAngle) / MinDownwardsAngle;
         bonusSpeed += downward * Time.deltaTime * DownwardsSpeedBonus;
 
-        float speed = MoveSpeed + bonusSpeed + flapSpeed;
+        float speed = MoveSpeed + bonusSpeed + pathBonusSpeed + flapSpeed;
 
         if (inPath) { 
             pathCurrentPosition += speed * Time.deltaTime * pathDir;
@@ -309,7 +382,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Speed")) {
-            bonusSpeed += 10f;
+            bonusSpeed += BoostSpeed;
         }
 
         if (other.CompareTag("Portal")) {
