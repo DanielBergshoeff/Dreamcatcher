@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
@@ -13,9 +14,9 @@ public class PlayerController : MonoBehaviour
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
     public float ReturnToNeutralBoost = 2.0f;
-    public float BindRotationSpeed = 120f;
     public float BoostSpeed = 5f;
     public float ReduceSpeedMultiplier = 5f;
+    public float BoostCooldown = 3f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -28,7 +29,11 @@ public class PlayerController : MonoBehaviour
     public float AversionMultiplier = 3f;
     public float SphereSize = 0.7f;
 
-    [SerializeField]
+    [Header("Pillars")]
+    public float BindRotationSpeed = 120f;
+    public bool BindRotation = false;
+    public float BindCooldown = 0.5f;
+
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
     private float pathBonusSpeed = 0f;
@@ -60,10 +65,23 @@ public class PlayerController : MonoBehaviour
     private float pathCurrentPosition = 0f;
     private int pathDir = 1;
     private float pathCoolDown = 0f;
+    private float boostCooldown = 0f;
+    private float bindCooldown = 0f;
+
+    private AudioSource myAudioSource;
 
     private void Awake() {
         Instance = this;
         body = transform.GetChild(0);
+        myAudioSource = GetComponent<AudioSource>();
+    }
+
+    private void OnQ() {
+        OnLeftShoulder();
+    }
+
+    private void OnE() {
+        OnRightShoulder();
     }
 
     private void OnLeftShoulder() {
@@ -103,22 +121,41 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnBind() {
-        if (!inPillar)
+        Debug.Log(bindCooldown);
+        if (!inPillar || bindCooldown > 0f)
             return;
 
-        aroundPillar = true;
         pillarPoint = new Vector3(currentPillar.transform.position.x, transform.position.y, currentPillar.transform.position.z);
-        TriangleCanvas.SetActive(false);
-        currentRot = 0f;
 
+        if (!BindRotation) {
+            switch(PillarManager.Instance.AddPillarToBind(currentPillar, pillarPoint)) {
+                case PillarBoundType.Bound:
+                    myAudioSource.PlayOneShot(AudioManager.Instance.ConnectPillar);
+                    TriangleCanvas.SetActive(false);
+                    inPillar = false;
+                    break;
+                case PillarBoundType.Last:
+                    myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
+                    bindCooldown = BindCooldown;
+                    break;
+                case PillarBoundType.Portal:
+                    myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
+                    myAudioSource.PlayOneShot(AudioManager.Instance.CompleteArea);
+                    TriangleCanvas.SetActive(false);
+                    inPillar = false;
+                    break;
+            }
+            return;
+        }
+
+        aroundPillar = true;
+
+        currentRot = 0f;
         Vector3 dir = pillarPoint - transform.position;
         float angleRight = Vector3.Angle(dir, transform.right);
         float angleLeft = Vector3.Angle(dir, -transform.right);
 
         direction = angleRight > angleLeft ? -1f : 1f;
-
-        inPillar = false;
-
         FreeLookCam.Instance.RotatingAroundPillar = true;
     }
 
@@ -126,6 +163,12 @@ public class PlayerController : MonoBehaviour
     void Update() {
         if (pathCoolDown > 0f)
             pathCoolDown -= Time.deltaTime;
+
+        if (boostCooldown > 0f)
+            boostCooldown -= Time.deltaTime;
+
+        if (bindCooldown > 0f)
+            bindCooldown -= Time.deltaTime;
 
         if (aroundPillar) {
             RotateAroundPillar();
@@ -207,8 +250,6 @@ public class PlayerController : MonoBehaviour
                     aversionDirectionRight = 1f;
                 }
             }
-
-            Debug.Log(aversionDirectionRight);
         }
 
         if (up > 0f) {
@@ -265,7 +306,7 @@ public class PlayerController : MonoBehaviour
             boost = true;
         
         if((totalRot > 0f && wingPosition < 1f) || (totalRot < 0f && wingPosition > -1f))
-            rotation = totalRot * Time.deltaTime * (boost ? BodyRotateSpeed : ReturnToNeutralBoost);
+            rotation = totalRot * Time.deltaTime * (boost ? ReturnToNeutralBoost : BodyRotateSpeed);
 
         //VERTICAL ROTATION
         if ((wingPositionVertical > 1f * targetDirection.y && targetDirection.y < 0f)
@@ -278,12 +319,12 @@ public class PlayerController : MonoBehaviour
         float totalRotVertical = rotPlayerVertical - rotAversionVertical;
 
         if ((totalRotVertical > 0f && wingPositionVertical < 1f) || (totalRotVertical < 0f && wingPositionVertical > -1f))
-            vertical = totalRotVertical * Time.deltaTime * (boost ? BodyRotateSpeed : ReturnToNeutralBoost);
+            vertical = totalRotVertical * Time.deltaTime * (boost ? ReturnToNeutralBoost : BodyRotateSpeed);
 
         wingPosition += rotation;
         wingPositionVertical += vertical;
 
-        body.rotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation / 2f, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
+        body.localRotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation, 0f, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
         float speed = MoveSpeed + bonusSpeed + pathBonusSpeed + flapSpeed;
 
@@ -295,7 +336,7 @@ public class PlayerController : MonoBehaviour
             float f3 = wingPositionVertical * RotateSpeed * (speed / 8f);
             float f4 = f3 * aversionStrengthVertical * AversionMultiplier;
             float total = transform.eulerAngles.x + f3 + f4;
-            if((Mathf.Abs(total) < MaxRotation / 2f && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotation &&  Mathf.Abs(total) > 180f))
+            if((Mathf.Abs(total) < MaxRotation && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotation &&  Mathf.Abs(total) > 180f))
                 transform.Rotate(f3 + f4, 0f, 0f);
             //Debug.Log("Vertical position: " + wingPositionVertical);
         }
@@ -335,7 +376,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        transform.position = transform.position + body.forward * Time.deltaTime * speed;
+        transform.position = transform.position + transform.forward * Time.deltaTime * speed;
     }
 
     private void RotateAroundPillar() {
@@ -348,8 +389,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnJump() {
-        flapSpeed = BoostSpeed;
+    private void OnBoost() {
+        if (boostCooldown > 0f)
+            return;
+
+        boostCooldown = BoostCooldown;
+        flapSpeed += BoostSpeed;
     }
 
     private void OnRightStick(InputValue value) {

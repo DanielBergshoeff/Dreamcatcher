@@ -39,6 +39,10 @@ public class PillarManager : MonoBehaviour
         if (InstantPortal && !portalCreated)
             CreatePortal();
 
+        if(BindingPillars.Count > 0) {
+            UpdateLineRenderer();
+        }
+
         if (portalCreated) {
             Vector3 playerOffsetFromPortal = Camera.main.transform.position - MyPortal.transform.position;
             PortalCam.transform.position = OtherPortal.transform.position + playerOffsetFromPortal;
@@ -49,6 +53,10 @@ public class PillarManager : MonoBehaviour
             Vector3 newCameraDir = portalRotationalDif * Camera.main.transform.forward;
             PortalCam.transform.rotation = Quaternion.LookRotation(newCameraDir, Vector3.up);
         }
+    }
+
+    private void UpdateLineRenderer() {
+        myLineRenderers[myLineRenderers.Count - 1].SetPosition(myLineRenderers[myLineRenderers.Count - 1].positionCount - 1, PlayerController.Instance.transform.position);
     }
 
     public void SwapPortals() {
@@ -87,17 +95,16 @@ public class PillarManager : MonoBehaviour
         portalCreated = true;
     }
 
-    public void AddPillarToBind(Pillar pillar, Vector3 bindPos) {
+    public PillarBoundType AddPillarToBind(Pillar pillar, Vector3 bindPos) {
         if(BindingPillars.Count < 3) { //Just adding pillars
             for (int i = 0; i < BindingPillars.Count; i++) {
                 if (BindingPillars[i].MyPillar == pillar) //If the pillar has already been bound, return.
-                    return;
+                    return PillarBoundType.NotBound;
             }
 
             BindingPillars.Add(new PillarBind(pillar, bindPos));
             if (BindingPillars.Count <= 1) { //If this is the first pillar, create a new linerenderer and then return.
                 myLineRenderers.Add(Instantiate(LineRendererPrefab).GetComponent<LineRenderer>());
-                return;
             }
 
             List<Vector3> positions = new List<Vector3>();
@@ -105,19 +112,28 @@ public class PillarManager : MonoBehaviour
                 positions.Add(pb.BindPosition);
             }
 
+            positions.Add(bindPos);
+
             myLineRenderers[myLineRenderers.Count - 1].positionCount = positions.Count;
             myLineRenderers[myLineRenderers.Count - 1].SetPositions(positions.ToArray());
+
+            return PillarBoundType.Bound;
         }
         else {
             if (pillar != BindingPillars[0].MyPillar)
-                return;
+                return PillarBoundType.NotBound;
 
             BindingPillars.Add(BindingPillars[0]);
             AddMesh(BindingPillars[0].BindPosition, BindingPillars[1].BindPosition, BindingPillars[2].BindPosition);
-            CreatureManager.Instance.CheckForButterfly(BindingPillars[0].BindPosition, BindingPillars[1].BindPosition, BindingPillars[2].BindPosition);
-            BindingPillars = new List<PillarBind>();
 
+            bool finished = CreatureManager.Instance.CheckForButterfly(BindingPillars[0].BindPosition, BindingPillars[1].BindPosition, BindingPillars[2].BindPosition);
+            BindingPillars = new List<PillarBind>();
             myLineRenderers[myLineRenderers.Count - 1].positionCount = 0;
+
+            if (finished) 
+                return PillarBoundType.Portal;
+
+            return PillarBoundType.Last;
         }
     }
 
@@ -177,4 +193,12 @@ public class PillarBind
         MyPillar = pillar;
         BindPosition = bindPosition;
     }
+}
+
+public enum PillarBoundType
+{
+    NotBound,
+    Bound,
+    Last,
+    Portal
 }
