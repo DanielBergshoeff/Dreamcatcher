@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Portals
-  m_Shader: {fileID: -6465566751694194690, guid: 851d70daac8b9644fa90b401947d4718,
+  m_Name: MAT_Lightbeams
+  m_Shader: {fileID: -6465566751694194690, guid: 273384714dfaa6241ae968aa3fb9b645,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - Vector1_24E2C50B: 0.86
-    - Vector1_260FDC41: 1.59
+    - Vector1_CEA87356: 6.52
+    - Vector1_D910033B: 4.6
     m_Colors:
-    - Color_758D2D0F: {r: 0.86190283, g: 0.7971698, b: 1, a: 0}
+    - Color_9C02AD86: {r: 0.41037738, g: 0.58309335, b: 1, a: 0}
