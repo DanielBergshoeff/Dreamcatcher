@@ -38,14 +38,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "eb93eff0-2b43-4893-9b3e-fc609ba7a0cf",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "Bind",
                     "type": "Button",
                     "id": "b0f8fc7e-7687-464a-b55a-ddc665c8da87",
@@ -84,6 +76,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "E",
+                    "type": "Button",
+                    "id": "fec899c7-057f-4154-82d4-eab716cf7995",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "Q",
+                    "type": "Button",
+                    "id": "956f43bf-b526-4f3e-ba00-2cfe7ebb211d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -331,39 +339,6 @@
                 },
                 {
                     "name": "",
-                    "id": "318dfbc3-f6e5-4fb1-a136-c01133d6956a",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ebe22372-8b85-476d-af47-a8716a4e8502",
-                    "path": "<DualShockGamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bfb40d5a-c55a-4856-986f-15e1fc401269",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e231086e-4390-4a43-b68f-17a4ae625ab2",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
@@ -377,6 +352,17 @@
                     "name": "",
                     "id": "97ac02eb-4533-4908-b730-44241fd7d72f",
                     "path": "<DualShockGamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Bind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25394e21-4b75-48ac-9d75-060944fc19b5",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -469,6 +455,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "L2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16192992-66b6-4509-8a03-fbfafa494fe6",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Q",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3652d91-1417-4be6-9320-1a48f1efead4",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "E",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

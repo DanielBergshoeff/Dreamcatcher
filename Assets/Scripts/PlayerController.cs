@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
     public float ReturnToNeutralBoost = 2.0f;
-    public float BindRotationSpeed = 120f;
     public float BoostSpeed = 5f;
     public float ReduceSpeedMultiplier = 5f;
 
@@ -27,6 +26,10 @@ public class PlayerController : MonoBehaviour
     public LayerMask CollisionLayer;
     public float AversionMultiplier = 3f;
     public float SphereSize = 0.7f;
+
+    [Header("Pillars")]
+    public float BindRotationSpeed = 120f;
+    public bool BindRotation = false;
 
     [SerializeField]
     private float bonusSpeed = 0f;
@@ -64,6 +67,14 @@ public class PlayerController : MonoBehaviour
     private void Awake() {
         Instance = this;
         body = transform.GetChild(0);
+    }
+
+    private void OnQ() {
+        OnLeftShoulder();
+    }
+
+    private void OnE() {
+        OnRightShoulder();
     }
 
     private void OnLeftShoulder() {
@@ -106,8 +117,14 @@ public class PlayerController : MonoBehaviour
         if (!inPillar)
             return;
 
-        aroundPillar = true;
         pillarPoint = new Vector3(currentPillar.transform.position.x, transform.position.y, currentPillar.transform.position.z);
+
+        if (!BindRotation) {
+            PillarManager.Instance.AddPillarToBind(currentPillar, pillarPoint);
+            return;
+        }
+
+        aroundPillar = true;
         TriangleCanvas.SetActive(false);
         currentRot = 0f;
 
@@ -207,8 +224,6 @@ public class PlayerController : MonoBehaviour
                     aversionDirectionRight = 1f;
                 }
             }
-
-            Debug.Log(aversionDirectionRight);
         }
 
         if (up > 0f) {
@@ -265,7 +280,7 @@ public class PlayerController : MonoBehaviour
             boost = true;
         
         if((totalRot > 0f && wingPosition < 1f) || (totalRot < 0f && wingPosition > -1f))
-            rotation = totalRot * Time.deltaTime * (boost ? BodyRotateSpeed : ReturnToNeutralBoost);
+            rotation = totalRot * Time.deltaTime * (boost ? ReturnToNeutralBoost : BodyRotateSpeed);
 
         //VERTICAL ROTATION
         if ((wingPositionVertical > 1f * targetDirection.y && targetDirection.y < 0f)
@@ -278,12 +293,12 @@ public class PlayerController : MonoBehaviour
         float totalRotVertical = rotPlayerVertical - rotAversionVertical;
 
         if ((totalRotVertical > 0f && wingPositionVertical < 1f) || (totalRotVertical < 0f && wingPositionVertical > -1f))
-            vertical = totalRotVertical * Time.deltaTime * (boost ? BodyRotateSpeed : ReturnToNeutralBoost);
+            vertical = totalRotVertical * Time.deltaTime * (boost ? ReturnToNeutralBoost : BodyRotateSpeed);
 
         wingPosition += rotation;
         wingPositionVertical += vertical;
 
-        body.rotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation / 2f, body.rotation.eulerAngles.y, wingPosition * -MaxRotation));
+        body.localRotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation, 0f, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
         float speed = MoveSpeed + bonusSpeed + pathBonusSpeed + flapSpeed;
 
@@ -295,7 +310,7 @@ public class PlayerController : MonoBehaviour
             float f3 = wingPositionVertical * RotateSpeed * (speed / 8f);
             float f4 = f3 * aversionStrengthVertical * AversionMultiplier;
             float total = transform.eulerAngles.x + f3 + f4;
-            if((Mathf.Abs(total) < MaxRotation / 2f && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotation &&  Mathf.Abs(total) > 180f))
+            if((Mathf.Abs(total) < MaxRotation && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotation &&  Mathf.Abs(total) > 180f))
                 transform.Rotate(f3 + f4, 0f, 0f);
             //Debug.Log("Vertical position: " + wingPositionVertical);
         }
@@ -335,7 +350,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        transform.position = transform.position + body.forward * Time.deltaTime * speed;
+        transform.position = transform.position + transform.forward * Time.deltaTime * speed;
     }
 
     private void RotateAroundPillar() {
