@@ -39,6 +39,10 @@ public class PillarManager : MonoBehaviour
         if (InstantPortal && !portalCreated)
             CreatePortal();
 
+        if(BindingPillars.Count > 0) {
+            UpdateLineRenderer();
+        }
+
         if (portalCreated) {
             Vector3 playerOffsetFromPortal = Camera.main.transform.position - MyPortal.transform.position;
             PortalCam.transform.position = OtherPortal.transform.position + playerOffsetFromPortal;
@@ -49,6 +53,10 @@ public class PillarManager : MonoBehaviour
             Vector3 newCameraDir = portalRotationalDif * Camera.main.transform.forward;
             PortalCam.transform.rotation = Quaternion.LookRotation(newCameraDir, Vector3.up);
         }
+    }
+
+    private void UpdateLineRenderer() {
+        myLineRenderers[myLineRenderers.Count - 1].SetPosition(myLineRenderers[myLineRenderers.Count - 1].positionCount - 1, PlayerController.Instance.transform.position);
     }
 
     public void SwapPortals() {
@@ -97,13 +105,14 @@ public class PillarManager : MonoBehaviour
             BindingPillars.Add(new PillarBind(pillar, bindPos));
             if (BindingPillars.Count <= 1) { //If this is the first pillar, create a new linerenderer and then return.
                 myLineRenderers.Add(Instantiate(LineRendererPrefab).GetComponent<LineRenderer>());
-                return;
             }
 
             List<Vector3> positions = new List<Vector3>();
             foreach (PillarBind pb in BindingPillars) {
                 positions.Add(pb.BindPosition);
             }
+
+            positions.Add(bindPos);
 
             myLineRenderers[myLineRenderers.Count - 1].positionCount = positions.Count;
             myLineRenderers[myLineRenderers.Count - 1].SetPositions(positions.ToArray());
