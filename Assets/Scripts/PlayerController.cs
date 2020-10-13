@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public float BodyRotateSpeed = 0.5f;
     public float RotateSpeed = 3f;
     public float MaxRotation = 60f;
+    public float MaxRotationVertical = 40f;
+    public float MaxRotationVerticalBody = 40f;
     public float ReturnToNeutralBoost = 2.0f;
     public float BoostSpeed = 5f;
     public float ReduceSpeedMultiplier = 5f;
@@ -121,7 +123,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnBind() {
-        Debug.Log(bindCooldown);
         if (!inPillar || bindCooldown > 0f)
             return;
 
@@ -324,7 +325,7 @@ public class PlayerController : MonoBehaviour
         wingPosition += rotation;
         wingPositionVertical += vertical;
 
-        body.localRotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotation, 0f, wingPosition * -MaxRotation));
+        body.localRotation = Quaternion.identity * Quaternion.Euler(new Vector3(wingPositionVertical * MaxRotationVerticalBody, 0f, wingPosition * -MaxRotation));
         transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f));
         float speed = MoveSpeed + bonusSpeed + pathBonusSpeed + flapSpeed;
 
@@ -336,7 +337,7 @@ public class PlayerController : MonoBehaviour
             float f3 = wingPositionVertical * RotateSpeed * (speed / 8f);
             float f4 = f3 * aversionStrengthVertical * AversionMultiplier;
             float total = transform.eulerAngles.x + f3 + f4;
-            if((Mathf.Abs(total) < MaxRotation && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotation &&  Mathf.Abs(total) > 180f))
+            if((Mathf.Abs(total) < MaxRotationVertical && Mathf.Abs(total) < 180f) || (Mathf.Abs(total) > 360f - MaxRotationVertical &&  Mathf.Abs(total) > 180f))
                 transform.Rotate(f3 + f4, 0f, 0f);
             //Debug.Log("Vertical position: " + wingPositionVertical);
         }
