@@ -446,6 +446,17 @@
                 },
                 {
                     "name": "",
+                    "id": "8a01a072-3a2e-4a1c-b5b7-365a1e88a13b",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "3b7d7e91-e39c-4723-88b7-c3563227b867",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
