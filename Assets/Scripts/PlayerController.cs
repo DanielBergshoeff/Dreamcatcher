@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
     [Header("Pillars")]
     public float BindRotationSpeed = 120f;
     public bool BindRotation = false;
-    public float BindCooldown = 0.5f;
 
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
@@ -69,7 +68,8 @@ public class PlayerController : MonoBehaviour
     private int pathDir = 1;
     private float pathCoolDown = 0f;
     private float boostCooldown = 0f;
-    private float bindCooldown = 0f;
+
+    private PlayerInput playerInput;
 
     private AudioSource myAudioSource;
 
@@ -77,17 +77,23 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         body = transform.GetChild(0);
         myAudioSource = GetComponent<AudioSource>();
+        playerInput = GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("LeftShoulder").started += LeftShoulder;
+        playerInput.actions.FindAction("RightShoulder").started += RightShoulder;
+        playerInput.actions.FindAction("LeftShoulder").canceled += LeftShoulder;
+        playerInput.actions.FindAction("RightShoulder").canceled += RightShoulder;
+
+        playerInput.actions.FindAction("Bind").started += Bind;
+
     }
 
-    private void OnQ() {
-        OnLeftShoulder();
-    }
+    private void LeftShoulder(InputAction.CallbackContext context) {
+        if(rotateAroundSelf && context.started) //If started, but there's already rotation
+            return;
 
-    private void OnE() {
-        OnRightShoulder();
-    }
+        if (context.canceled && !rotateAroundSelf) //If stopped, but there's no rotation going
+            return;
 
-    private void OnLeftShoulder() {
         if (aroundPillar)
             return;
 
@@ -101,7 +107,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnRightShoulder() {
+    private void RightShoulder(InputAction.CallbackContext context) {
+        if (rotateAroundSelf && context.started) //If started, but there's already rotation
+            return;
+
+        if (context.canceled && !rotateAroundSelf) //If stopped, but there's no rotation going
+            return;
+
         if (aroundPillar)
             return;
 
@@ -123,8 +135,8 @@ public class PlayerController : MonoBehaviour
         FreeLookCam.Instance.OnL2();
     }
 
-    private void OnBind() {
-        if (!inPillar || bindCooldown > 0f)
+    private void Bind(InputAction.CallbackContext context) {
+        if (!inPillar)
             return;
 
         pillarPoint = new Vector3(currentPillar.transform.position.x, transform.position.y, currentPillar.transform.position.z);
@@ -138,7 +150,6 @@ public class PlayerController : MonoBehaviour
                     break;
                 case PillarBoundType.Last:
                     myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
-                    bindCooldown = BindCooldown;
                     break;
                 case PillarBoundType.Portal:
                     myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
@@ -168,9 +179,6 @@ public class PlayerController : MonoBehaviour
 
         if (boostCooldown > 0f)
             boostCooldown -= Time.deltaTime;
-
-        if (bindCooldown > 0f)
-            bindCooldown -= Time.deltaTime;
 
         if (aroundPillar) {
             RotateAroundPillar();
