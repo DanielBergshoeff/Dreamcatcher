@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
     [Header("Pillars")]
     public float BindRotationSpeed = 120f;
     public bool BindRotation = false;
-    public float BindCooldown = 0.5f;
 
     private float bonusSpeed = 0f;
     private float flapSpeed = 0f;
@@ -69,7 +68,6 @@ public class PlayerController : MonoBehaviour
     private int pathDir = 1;
     private float pathCoolDown = 0f;
     private float boostCooldown = 0f;
-    private float bindCooldown = 0f;
 
     private PlayerInput playerInput;
 
@@ -138,7 +136,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Bind(InputAction.CallbackContext context) {
-        if (!inPillar || bindCooldown > 0f)
+        if (!inPillar)
             return;
 
         pillarPoint = new Vector3(currentPillar.transform.position.x, transform.position.y, currentPillar.transform.position.z);
@@ -181,9 +179,6 @@ public class PlayerController : MonoBehaviour
 
         if (boostCooldown > 0f)
             boostCooldown -= Time.deltaTime;
-
-        if (bindCooldown > 0f)
-            bindCooldown -= Time.deltaTime;
 
         if (aroundPillar) {
             RotateAroundPillar();
