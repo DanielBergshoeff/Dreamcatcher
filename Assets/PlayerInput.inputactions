@@ -402,6 +402,17 @@
                 },
                 {
                     "name": "",
+                    "id": "47f225be-afe4-4ca5-9915-ccce2e33cf23",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightShoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "33aff7af-978b-417f-982f-5857b235c20e",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
@@ -415,6 +426,17 @@
                     "name": "",
                     "id": "39cefe4d-e5f8-4e65-9328-d5821e836d93",
                     "path": "<DualShockGamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftShoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e524197e-be89-455a-8591-9a88463d9ad2",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

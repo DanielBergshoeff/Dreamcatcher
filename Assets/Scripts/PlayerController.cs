@@ -71,23 +71,31 @@ public class PlayerController : MonoBehaviour
     private float boostCooldown = 0f;
     private float bindCooldown = 0f;
 
+    private PlayerInput playerInput;
+
     private AudioSource myAudioSource;
 
     private void Awake() {
         Instance = this;
         body = transform.GetChild(0);
         myAudioSource = GetComponent<AudioSource>();
+        playerInput = GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("LeftShoulder").started += LeftShoulder;
+        playerInput.actions.FindAction("RightShoulder").started += RightShoulder;
+        playerInput.actions.FindAction("LeftShoulder").canceled += LeftShoulder;
+        playerInput.actions.FindAction("RightShoulder").canceled += RightShoulder;
+
+        playerInput.actions.FindAction("Bind").started += Bind;
+
     }
 
-    private void OnQ() {
-        OnLeftShoulder();
-    }
+    private void LeftShoulder(InputAction.CallbackContext context) {
+        if(rotateAroundSelf && context.started) //If started, but there's already rotation
+            return;
 
-    private void OnE() {
-        OnRightShoulder();
-    }
+        if (context.canceled && !rotateAroundSelf) //If stopped, but there's no rotation going
+            return;
 
-    private void OnLeftShoulder() {
         if (aroundPillar)
             return;
 
@@ -101,7 +109,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnRightShoulder() {
+    private void RightShoulder(InputAction.CallbackContext context) {
+        if (rotateAroundSelf && context.started) //If started, but there's already rotation
+            return;
+
+        if (context.canceled && !rotateAroundSelf) //If stopped, but there's no rotation going
+            return;
+
         if (aroundPillar)
             return;
 
@@ -123,7 +137,7 @@ public class PlayerController : MonoBehaviour
         FreeLookCam.Instance.OnL2();
     }
 
-    private void OnBind() {
+    private void Bind(InputAction.CallbackContext context) {
         if (!inPillar || bindCooldown > 0f)
             return;
 
@@ -138,7 +152,6 @@ public class PlayerController : MonoBehaviour
                     break;
                 case PillarBoundType.Last:
                     myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
-                    bindCooldown = BindCooldown;
                     break;
                 case PillarBoundType.Portal:
                     myAudioSource.PlayOneShot(AudioManager.Instance.CompleteForm);
