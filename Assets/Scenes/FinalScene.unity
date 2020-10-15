@@ -6580,12 +6580,12 @@ PrefabInstance:
     - target: {fileID: 1072539397506852144, guid: 886db7f689b6f804d9e92531c0ecfbac,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 97.65
+      value: 93.4
       objectReference: {fileID: 0}
     - target: {fileID: 1072539397506852144, guid: 886db7f689b6f804d9e92531c0ecfbac,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 115.5
+      value: 129
       objectReference: {fileID: 0}
     - target: {fileID: 1072539397506852144, guid: 886db7f689b6f804d9e92531c0ecfbac,
         type: 3}
@@ -6631,6 +6631,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5328179171541373306, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651348459557461213, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639338979854746701, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639338979854746701, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639338979854746701, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639338979854746701, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639338979854746701, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639338979854746701, guid: 886db7f689b6f804d9e92531c0ecfbac,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 886db7f689b6f804d9e92531c0ecfbac, type: 3}
@@ -22873,6 +22913,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Portal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8831753038656126300, guid: cf6b8bb88411fd4479ebe4195e12f5d2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 207734314235909772, guid: cf6b8bb88411fd4479ebe4195e12f5d2, type: 3}
