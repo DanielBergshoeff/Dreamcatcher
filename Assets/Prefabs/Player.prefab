@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 6
-  BodyRotateSpeed: 0.8
+  BodyRotateSpeed: 0.5
   RotateSpeed: 1.5
   MaxRotation: 60
   MaxRotationVertical: 60
@@ -57,7 +57,7 @@ MonoBehaviour:
   BoostSpeed: 5
   ReduceSpeedMultiplier: 10
   BoostCooldown: 3
-  BounceBack: 1
+  BounceBack: 0.4
   DownwardsSpeedBonus: 3
   MinDownwardsAngle: 80
   TriangleCanvas: {fileID: 6581840635886203216}
@@ -66,7 +66,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   AversionMultiplier: 3
-  SphereSize: 0.7
+  SphereSize: 0.5
   BindRotationSpeed: 200
   BindRotation: 0
   PathBonusSpeed: 5
