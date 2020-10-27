@@ -60,8 +60,9 @@ public class FreeLookCam : PivotBasedCameraRig
 
         base.Awake();
         // Lock or unlock the cursor.
+        /*
         Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !m_LockCursor;
+        Cursor.visible = !m_LockCursor;*/
         m_PivotEulers = m_Pivot.rotation.eulerAngles;
 
         m_PivotTargetRot = m_Pivot.transform.localRotation;
@@ -73,10 +74,11 @@ public class FreeLookCam : PivotBasedCameraRig
 
     protected void Update() {
         HandleRotationMovement();
+        /*
         if (m_LockCursor && Input.GetMouseButtonUp(0)) {
             Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = !m_LockCursor;
-        }
+        }*/
 
         if(PillarManager.Instance.MyPortal == null) 
             return;
@@ -92,8 +94,9 @@ public class FreeLookCam : PivotBasedCameraRig
 
 
     private void OnDisable() {
+        /*
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Cursor.visible = true;*/
     }
 
 

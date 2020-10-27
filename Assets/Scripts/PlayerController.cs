@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public float ReduceSpeedMultiplier = 5f;
     public float BoostCooldown = 3f;
     public float BounceBack = 1f;
+    public float RotateAroundSelfAngle = 2f;
 
     [Header("Misc")]
     public float DownwardsSpeedBonus = 3f;
@@ -99,7 +100,6 @@ public class PlayerController : MonoBehaviour
 
         if (!rotateAroundSelf) {
             direction = -1;
-            currentRot = 0f;
             rotateAroundSelf = true;
         }
         else {
@@ -119,7 +119,6 @@ public class PlayerController : MonoBehaviour
 
         if (!rotateAroundSelf) {
             direction = 1;
-            currentRot = 0f;
             rotateAroundSelf = true;
         }
         else {
@@ -163,7 +162,6 @@ public class PlayerController : MonoBehaviour
 
         aroundPillar = true;
 
-        currentRot = 0f;
         Vector3 dir = pillarPoint - transform.position;
         float angleRight = Vector3.Angle(dir, transform.right);
         float angleLeft = Vector3.Angle(dir, -transform.right);
@@ -197,8 +195,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void RotateAroundSelf() {
-        transform.RotateAround(transform.position + transform.right * direction, Vector3.up, 1f * direction);
-        currentRot += 1f;
+        transform.RotateAround(transform.position + transform.right * direction, Vector3.up, RotateAroundSelfAngle * direction);
     }
 
     private void CollisionAversion() {
